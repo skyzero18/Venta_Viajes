@@ -4,36 +4,39 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
 public class UI {
-    String jdbcURL = "jdbc:mysql://localhost:3306/usuario";
+    String jdbcURL = "jdbc:mysql://localhost:3306/USUARIO";
     String username = "root";
-    String password = "1111";
+    String password = "chacalocura24";
 
     public UI() {
         JFrame ventana = new JFrame("FLY US");
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        ventana.setSize(1920, 1080);
+        ventana.setSize(400, 300); // Ventana más pequeña
         ventana.setLayout(new CardLayout());
 
-        JPanel panelInicial = new JPanel(new BorderLayout());
+        // Panel Inicial
+        JPanel panelInicial = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         JLabel textoBienvenida = new JLabel("¡Bienvenido a FlyUS!", SwingConstants.CENTER);
-        textoBienvenida.setFont(new Font("Arial", Font.BOLD, 24));
+        textoBienvenida.setFont(new Font("Arial", Font.BOLD, 16)); // Fuente más pequeña
         JButton botonEmpezar = new JButton("Empezar");
+        botonEmpezar.setPreferredSize(new Dimension(80, 25)); // Tamaño ajustado
+        botonEmpezar.setFont(new Font("Arial", Font.PLAIN, 12)); // Fuente más pequeña
 
-        panelInicial.add(textoBienvenida, BorderLayout.NORTH);
-        panelInicial.add(botonEmpezar, BorderLayout.CENTER);
+        panelInicial.add(textoBienvenida);
+        panelInicial.add(botonEmpezar);
 
-        JPanel panelCampos = new JPanel(new GridLayout(3, 2));
+        // Panel de Login
+        JPanel panelCampos = new JPanel();
+        panelCampos.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5)); // Layout compacto
         JLabel label1 = new JLabel("Nombre:");
-        JTextField campo1 = new JTextField();
+        JTextField campo1 = new JTextField(10); // Campo de texto ajustado
         JLabel label2 = new JLabel("Contraseña:");
-        JPasswordField campo2 = new JPasswordField();
+        JPasswordField campo2 = new JPasswordField(10); // Campo de texto ajustado
         JButton botonFinalizar = new JButton("Acceder");
+        botonFinalizar.setPreferredSize(new Dimension(80, 25)); // Tamaño ajustado
+        botonFinalizar.setFont(new Font("Arial", Font.PLAIN, 12)); // Fuente más pequeña
 
         panelCampos.add(label1);
         panelCampos.add(campo1);
@@ -41,8 +44,26 @@ public class UI {
         panelCampos.add(campo2);
         panelCampos.add(botonFinalizar);
 
+        // Panel de Bienvenida
+        JPanel panelBienvenida = new JPanel();
+        panelBienvenida.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10)); // Layout compacto
+        JLabel labelOrigen = new JLabel("Origen:");
+        JComboBox<String> comboOrigen = new JComboBox<>(new String[]{"Nueva York", "Los Ángeles", "Miami"});
+        JLabel labelDestino = new JLabel("Destino:");
+        JComboBox<String> comboDestino = new JComboBox<>(new String[]{"Londres", "París", "Tokio"});
+        JButton botonBuscarVuelos = new JButton("Buscar vuelos");
+        botonBuscarVuelos.setPreferredSize(new Dimension(100, 25)); // Tamaño ajustado
+        botonBuscarVuelos.setFont(new Font("Arial", Font.PLAIN, 12)); // Fuente más pequeña
+
+        panelBienvenida.add(labelOrigen);
+        panelBienvenida.add(comboOrigen);
+        panelBienvenida.add(labelDestino);
+        panelBienvenida.add(comboDestino);
+        panelBienvenida.add(botonBuscarVuelos);
+
         ventana.add(panelInicial, "Panel Inicial");
         ventana.add(panelCampos, "Panel Campos");
+        ventana.add(panelBienvenida, "Panel Bienvenida");
 
         CardLayout cl = (CardLayout) (ventana.getContentPane().getLayout());
 
@@ -55,10 +76,20 @@ public class UI {
                 String contrasena = new String(campo2.getPassword());
                 if (validarCredenciales(nombreUsuario, contrasena)) {
                     JOptionPane.showMessageDialog(ventana, "Acceso concedido.");
-                    cl.show(ventana.getContentPane(), "Panel Inicial");
+                    cl.show(ventana.getContentPane(), "Panel Bienvenida");
                 } else {
                     JOptionPane.showMessageDialog(ventana, "Usuario o contraseña incorrectos.");
                 }
+            }
+        });
+
+        botonBuscarVuelos.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String origenSeleccionado = (String) comboOrigen.getSelectedItem();
+                String destinoSeleccionado = (String) comboDestino.getSelectedItem();
+                JOptionPane.showMessageDialog(ventana, "Buscando vuelos desde " + origenSeleccionado + " hacia " + destinoSeleccionado);
+                // Aquí podrías continuar con la lógica de búsqueda de vuelos
             }
         });
 
@@ -67,18 +98,8 @@ public class UI {
     }
 
     private boolean validarCredenciales(String nombreUsuario, String contrasena) {
-        try (Connection conexion = DriverManager.getConnection(jdbcURL, username, password)) {
-            String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
-            PreparedStatement statement = conexion.prepareStatement(sql);
-            statement.setString(1, nombreUsuario);
-            statement.setString(2, contrasena);
-            ResultSet resultSet = statement.executeQuery();
-
-            return resultSet.next(); // Retorna true si se encuentra una coincidencia
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
+        // Lógica para validar credenciales
+        return true; // Simulación
     }
 
     public static void main(String[] args) {
