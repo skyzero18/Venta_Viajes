@@ -44,7 +44,7 @@ public class UI {
         panelCampos.add(campo2);
         panelCampos.add(botonFinalizar);
 
-        // Panel de Bienvenida
+        // Panel de Selección de Destino
         JPanel panelBienvenida = new JPanel();
         panelBienvenida.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10)); // Layout compacto
         JLabel labelOrigen = new JLabel("Origen:");
@@ -61,9 +61,22 @@ public class UI {
         panelBienvenida.add(comboDestino);
         panelBienvenida.add(botonBuscarVuelos);
 
+        // Panel de Selección de Método de Pago
+        JPanel panelPago = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        JLabel labelPago = new JLabel("Selecciona método de pago:");
+        JComboBox<String> comboMetodoPago = new JComboBox<>(new String[]{"Tarjeta de Crédito", "PayPal", "Transferencia Bancaria"});
+        JButton botonConfirmarPago = new JButton("Confirmar Pago");
+        botonConfirmarPago.setPreferredSize(new Dimension(120, 25)); // Tamaño ajustado
+        botonConfirmarPago.setFont(new Font("Arial", Font.PLAIN, 12)); // Fuente más pequeña
+
+        panelPago.add(labelPago);
+        panelPago.add(comboMetodoPago);
+        panelPago.add(botonConfirmarPago);
+
         ventana.add(panelInicial, "Panel Inicial");
         ventana.add(panelCampos, "Panel Campos");
         ventana.add(panelBienvenida, "Panel Bienvenida");
+        ventana.add(panelPago, "Panel Pago");
 
         CardLayout cl = (CardLayout) (ventana.getContentPane().getLayout());
 
@@ -88,8 +101,17 @@ public class UI {
             public void actionPerformed(ActionEvent e) {
                 String origenSeleccionado = (String) comboOrigen.getSelectedItem();
                 String destinoSeleccionado = (String) comboDestino.getSelectedItem();
-                JOptionPane.showMessageDialog(ventana, "Buscando vuelos desde " + origenSeleccionado + " hacia " + destinoSeleccionado);
-                // Aquí podrías continuar con la lógica de búsqueda de vuelos
+                JOptionPane.showMessageDialog(ventana, "Vuelos disponibles desde " + origenSeleccionado + " hacia " + destinoSeleccionado);
+                cl.show(ventana.getContentPane(), "Panel Pago");
+            }
+        });
+
+        botonConfirmarPago.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String metodoPagoSeleccionado = (String) comboMetodoPago.getSelectedItem();
+                JOptionPane.showMessageDialog(ventana, "Pago confirmado con " + metodoPagoSeleccionado);
+                // Aquí puedes añadir lógica para procesar el pago
             }
         });
 
