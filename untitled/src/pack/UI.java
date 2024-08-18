@@ -20,10 +20,13 @@ public class UI {
         textoBienvenida.setFont(new Font("Arial", Font.BOLD, 16)); // Fuente más pequeña
         JButton botonEmpezar = new JButton("Empezar");
         botonEmpezar.setPreferredSize(new Dimension(80, 25)); // Tamaño ajustado
+        JButton botonReg = new JButton("Registrarse");
+        botonReg.setPreferredSize(new Dimension(80, 25));
         botonEmpezar.setFont(new Font("Arial", Font.PLAIN, 12)); // Fuente más pequeña
 
         panelInicial.add(textoBienvenida);
         panelInicial.add(botonEmpezar);
+        panelInicial.add(botonReg);
 
         // Panel de Login
         JPanel panelCampos = new JPanel();
@@ -41,6 +44,27 @@ public class UI {
         panelCampos.add(label2);
         panelCampos.add(campo2);
         panelCampos.add(botonFinalizar);
+
+        // Panel de Registro
+        JPanel panelRegistro = new JPanel();
+        panelRegistro.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5)); // Layout compacto
+        JLabel labelNombre = new JLabel("Nombre:");
+        JTextField campoNombre = new JTextField(10); // Campo de texto ajustado
+        JLabel labelEmail = new JLabel("Email:");
+        JTextField campoEmail = new JTextField(10); // Campo de texto ajustado
+        JLabel labelContrasena = new JLabel("Contraseña:");
+        JPasswordField campoContrasena = new JPasswordField(10); // Campo de texto ajustado
+        JButton botonRegistrar = new JButton("Registrar");
+        botonRegistrar.setPreferredSize(new Dimension(80, 25)); // Tamaño ajustado
+        botonRegistrar.setFont(new Font("Arial", Font.PLAIN, 12)); // Fuente más pequeña
+
+        panelRegistro.add(labelNombre);
+        panelRegistro.add(campoNombre);
+        panelRegistro.add(labelEmail);
+        panelRegistro.add(campoEmail);
+        panelRegistro.add(labelContrasena);
+        panelRegistro.add(campoContrasena);
+        panelRegistro.add(botonRegistrar);
 
         // Panel de Selección de Destino
         JPanel panelBienvenida = new JPanel();
@@ -75,10 +99,12 @@ public class UI {
         ventana.add(panelCampos, "Panel Campos");
         ventana.add(panelBienvenida, "Panel Bienvenida");
         ventana.add(panelPago, "Panel Pago");
+        ventana.add(panelRegistro, "Panel Registro");
 
         CardLayout cl = (CardLayout) (ventana.getContentPane().getLayout());
 
         botonEmpezar.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Campos"));
+        botonReg.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Registro"));
 
         botonFinalizar.addActionListener(new ActionListener() {
             @Override
@@ -112,12 +138,28 @@ public class UI {
                 // Aquí puedes añadir lógica para procesar el pago
             }
         });
+        botonRegistrar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String nombre = campoNombre.getText();
+                String email = campoEmail.getText();
+                String contrasena = new String(campoContrasena.getPassword());
+
+                boolean resultado = usuario.insertarUsuario(nombre, contrasena, email);
+
+                if (resultado) {
+                    JOptionPane.showMessageDialog(ventana, "Usuario registrado con éxito.");
+                    cl.show(ventana.getContentPane(), "Panel Campos");
+                } else {
+                    JOptionPane.showMessageDialog(ventana, "Error al registrar el usuario.");
+                }
+            }
+        });
+
 
         ventana.setLocationRelativeTo(null);
         ventana.setVisible(true);
     }
 
-    public static void main(String[] args) {
-        new UI();
-    }
+
 }

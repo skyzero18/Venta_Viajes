@@ -31,5 +31,22 @@ public class Usuario {
         }
     }
 
-    // Métodos adicionales para gestionar el usuario
+    public boolean insertarUsuario(String nombreUsuario, String contrasena, String email) {
+        String sql = "INSERT INTO users (username, password, email) VALUES (?, ?, ?)";
+
+        try (Connection conexion = DriverManager.getConnection(jdbcURL, usernameDB, passwordDB);
+             PreparedStatement statement = conexion.prepareStatement(sql)) {
+
+            statement.setString(1, nombreUsuario);
+            statement.setString(2, contrasena);
+            statement.setString(3, email);
+            int filasAfectadas = statement.executeUpdate();
+            return filasAfectadas > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
 }
