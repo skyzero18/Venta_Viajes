@@ -22,4 +22,6 @@ public class Pasajero {
     public String getDocumentoIdentidad() {
         return documentoIdentidad;
     }
+
+    // Métodos adicionales si son necesarios
 }

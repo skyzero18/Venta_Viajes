@@ -38,7 +38,7 @@ public class Pago {
     }
 
     private void guardarPagoEnBD() {
-        // Lógica para guardar el pago en la base de datos usando SQLite
+        // Lógica para guardar el pago en la base de datos
     }
 
     // Getters y setters para los atributos según sea necesario
