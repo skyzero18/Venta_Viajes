@@ -6,9 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class UI {
-    String jdbcURL = "jdbc:mysql://localhost:3306/USUARIO";
-    String username = "root";
-    String password = "chacalocura24";
+    private Usuario usuario = new Usuario(); // Instanciar la clase Usuario para validar credenciales
 
     public UI() {
         JFrame ventana = new JFrame("FLY US");
@@ -87,7 +85,7 @@ public class UI {
             public void actionPerformed(ActionEvent e) {
                 String nombreUsuario = campo1.getText();
                 String contrasena = new String(campo2.getPassword());
-                if (validarCredenciales(nombreUsuario, contrasena)) {
+                if (usuario.validarCredenciales(nombreUsuario, contrasena)) {
                     JOptionPane.showMessageDialog(ventana, "Acceso concedido.");
                     cl.show(ventana.getContentPane(), "Panel Bienvenida");
                 } else {
@@ -117,11 +115,6 @@ public class UI {
 
         ventana.setLocationRelativeTo(null);
         ventana.setVisible(true);
-    }
-
-    private boolean validarCredenciales(String nombreUsuario, String contrasena) {
-        // Lógica para validar credenciales
-        return true; // Simulación
     }
 
     public static void main(String[] args) {
