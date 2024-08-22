@@ -6,10 +6,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class Usuario {
-    private String jdbcURL = "jdbc:mysql://localhost:3306/USUARIO";
-    private String usernameDB = "root";
-    private String passwordDB = "1111";
+    private String jdbcURL = "jdbc:mysql://localhost:3306/USUARIO"; // Asegúrate de que esta URL sea correcta
+    private String usernameDB = "root"; // Nombre de usuario de la base de datos
+    private String passwordDB = "chacalocura24"; // Contraseña de la base de datos
 
+    // Constructor (si es necesario)
     public Usuario() {
     }
 
@@ -21,13 +22,16 @@ public class Usuario {
 
             statement.setString(1, nombreUsuario);
             statement.setString(2, contrasena);
-
             try (ResultSet resultSet = statement.executeQuery()) {
-                return resultSet.next(); // Retorna true si se encuentra una coincidencia
+                if (resultSet.next()) {
+                    return true; // Credenciales válidas
+                } else {
+                    return false; // Credenciales inválidas
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return false; // Error en la conexión o consulta
         }
     }
 
@@ -40,12 +44,11 @@ public class Usuario {
             statement.setString(1, nombreUsuario);
             statement.setString(2, contrasena);
             statement.setString(3, email);
-
             int filasAfectadas = statement.executeUpdate();
             return filasAfectadas > 0;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return false; // Error en la conexión o consulta
         }
     }
 }

@@ -6,15 +6,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class UI {
-    String jdbcURL = "jdbc:mysql://localhost:3306/USUARIO";
-    String username = "root";
-    String password = "chacalocura24";
-
     public UI() {
         JFrame ventana = new JFrame("FLY US");
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        ventana.setSize(600, 400);
-        ventana.setLayout(new CardLayout());
+        ventana.setSize(600, 400); // Ventana más grande para acomodar los asientos
+        ventana.setLayout(new CardLayout()); // Configuración de CardLayout
+
+        CardLayout cl = (CardLayout) ventana.getContentPane().getLayout();
 
         // Panel Inicial
         JPanel panelInicial = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
@@ -28,21 +26,21 @@ public class UI {
         panelInicial.add(botonEmpezar);
 
         // Panel de Login
-        JPanel panelCampos = new JPanel();
-        panelCampos.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-        JLabel label1 = new JLabel("Nombre:");
-        JTextField campo1 = new JTextField(10);
-        JLabel label2 = new JLabel("Contraseña:");
-        JPasswordField campo2 = new JPasswordField(10);
-        JButton botonFinalizar = new JButton("Acceder");
-        botonFinalizar.setPreferredSize(new Dimension(80, 25));
-        botonFinalizar.setFont(new Font("Arial", Font.PLAIN, 12));
+        JPanel panelLogin = new JPanel();
+        panelLogin.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+        JLabel labelUsuario = new JLabel("Nombre:");
+        JTextField campoUsuario = new JTextField(10);
+        JLabel labelContrasena = new JLabel("Contraseña:");
+        JPasswordField campoContrasena = new JPasswordField(10);
+        JButton botonAcceder = new JButton("Acceder");
+        botonAcceder.setPreferredSize(new Dimension(80, 25));
+        botonAcceder.setFont(new Font("Arial", Font.PLAIN, 12));
 
-        panelCampos.add(label1);
-        panelCampos.add(campo1);
-        panelCampos.add(label2);
-        panelCampos.add(campo2);
-        panelCampos.add(botonFinalizar);
+        panelLogin.add(labelUsuario);
+        panelLogin.add(campoUsuario);
+        panelLogin.add(labelContrasena);
+        panelLogin.add(campoContrasena);
+        panelLogin.add(botonAcceder);
 
         // Panel de Bienvenida
         JPanel panelBienvenida = new JPanel();
@@ -61,20 +59,49 @@ public class UI {
         panelBienvenida.add(comboDestino);
         panelBienvenida.add(botonBuscarVuelos);
 
+        // Panel de Asientos
+        JPanel panelAsientos = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+
+        int numRows = 6; // Número de filas
+        int numCols = 4; // Dos columnas a cada lado del pasillo
+
+        // Crear botones para asientos
+        JButton[][] asientos = new JButton[numRows][numCols];
+
+        for (int i = 0; i < numRows; i++) {
+            for (int j = 0; j < numCols; j++) {
+                gbc.gridy = i;
+                if (j == 2) {
+                    gbc.gridx = j + 1;
+                } else {
+                    gbc.gridx = j;
+                }
+
+                asientos[i][j] = new JButton("A" + (i + 1) + (j + 1));
+                panelAsientos.add(asientos[i][j], gbc);
+            }
+        }
+
+        // Añadir los paneles a la ventana
         ventana.add(panelInicial, "Panel Inicial");
-        ventana.add(panelCampos, "Panel Campos");
+        ventana.add(panelLogin, "Panel Login");
         ventana.add(panelBienvenida, "Panel Bienvenida");
+        ventana.add(panelAsientos, "Panel Asientos");
 
-        CardLayout cl = (CardLayout) (ventana.getContentPane().getLayout());
+        // Mostrar el panel inicial primero
+        cl.show(ventana.getContentPane(), "Panel Inicial");
 
-        botonEmpezar.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Campos"));
+        botonEmpezar.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Login"));
 
-        botonFinalizar.addActionListener(new ActionListener() {
+        botonAcceder.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String nombreUsuario = campo1.getText();
-                String contrasena = new String(campo2.getPassword());
-                if (validarCredenciales(nombreUsuario, contrasena)) {
+                String nombreUsuario = campoUsuario.getText();
+                String contrasena = new String(campoContrasena.getPassword());
+                Usuario usuario = new Usuario(); // Instanciar la clase Usuario
+                if (usuario.validarCredenciales(nombreUsuario, contrasena)) {
                     JOptionPane.showMessageDialog(ventana, "Acceso concedido.");
                     cl.show(ventana.getContentPane(), "Panel Bienvenida");
                 } else {
@@ -88,8 +115,8 @@ public class UI {
             public void actionPerformed(ActionEvent e) {
                 String origenSeleccionado = (String) comboOrigen.getSelectedItem();
                 String destinoSeleccionado = (String) comboDestino.getSelectedItem();
-                // Aquí podrías continuar con la lógica de búsqueda de vuelos
-                abrirSeleccionDeAsientos(ventana, origenSeleccionado, destinoSeleccionado);
+                JOptionPane.showMessageDialog(ventana, "Buscando vuelos desde " + origenSeleccionado + " hacia " + destinoSeleccionado);
+                cl.show(ventana.getContentPane(), "Panel Asientos");
             }
         });
 
@@ -97,32 +124,7 @@ public class UI {
         ventana.setVisible(true);
     }
 
-    private boolean validarCredenciales(String nombreUsuario, String contrasena) {
-        return true; // Simulación
-    }
-
-    private void abrirSeleccionDeAsientos(JFrame ventana, String origen, String destino) {
-        JFrame seleccionAsientosFrame = new JFrame("Seleccionar Asiento");
-        seleccionAsientosFrame.setSize(300, 200);
-        seleccionAsientosFrame.setLayout(new GridLayout(5, 5)); // Crear una cuadrícula para asientos
-
-        for (int i = 1; i <= 25; i++) {
-            JButton asiento = new JButton(String.valueOf(i));
-            asiento.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    JOptionPane.showMessageDialog(ventana, "Asiento " + asiento.getText() + " seleccionado.");
-                    seleccionAsientosFrame.dispose();
-                }
-            });
-            seleccionAsientosFrame.add(asiento);
-        }
-
-        seleccionAsientosFrame.setLocationRelativeTo(null);
-        seleccionAsientosFrame.setVisible(true);
-    }
-
     public static void main(String[] args) {
-        new UI();
+        SwingUtilities.invokeLater(UI::new);
     }
 }
