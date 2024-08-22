@@ -8,7 +8,6 @@ public class Main extends JFrame {
             @Override
             public void run() {
                 UI ventana = new UI();
-
             }
         });
     }

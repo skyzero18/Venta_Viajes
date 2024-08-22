@@ -13,30 +13,30 @@ public class UI {
     public UI() {
         JFrame ventana = new JFrame("FLY US");
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        ventana.setSize(400, 300); // Ventana más pequeña
+        ventana.setSize(600, 400);
         ventana.setLayout(new CardLayout());
 
         // Panel Inicial
         JPanel panelInicial = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         JLabel textoBienvenida = new JLabel("¡Bienvenido a FlyUS!", SwingConstants.CENTER);
-        textoBienvenida.setFont(new Font("Arial", Font.BOLD, 16)); // Fuente más pequeña
+        textoBienvenida.setFont(new Font("Arial", Font.BOLD, 16));
         JButton botonEmpezar = new JButton("Empezar");
-        botonEmpezar.setPreferredSize(new Dimension(80, 25)); // Tamaño ajustado
-        botonEmpezar.setFont(new Font("Arial", Font.PLAIN, 12)); // Fuente más pequeña
+        botonEmpezar.setPreferredSize(new Dimension(80, 25));
+        botonEmpezar.setFont(new Font("Arial", Font.PLAIN, 12));
 
         panelInicial.add(textoBienvenida);
         panelInicial.add(botonEmpezar);
 
         // Panel de Login
         JPanel panelCampos = new JPanel();
-        panelCampos.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5)); // Layout compacto
+        panelCampos.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
         JLabel label1 = new JLabel("Nombre:");
-        JTextField campo1 = new JTextField(10); // Campo de texto ajustado
+        JTextField campo1 = new JTextField(10);
         JLabel label2 = new JLabel("Contraseña:");
-        JPasswordField campo2 = new JPasswordField(10); // Campo de texto ajustado
+        JPasswordField campo2 = new JPasswordField(10);
         JButton botonFinalizar = new JButton("Acceder");
-        botonFinalizar.setPreferredSize(new Dimension(80, 25)); // Tamaño ajustado
-        botonFinalizar.setFont(new Font("Arial", Font.PLAIN, 12)); // Fuente más pequeña
+        botonFinalizar.setPreferredSize(new Dimension(80, 25));
+        botonFinalizar.setFont(new Font("Arial", Font.PLAIN, 12));
 
         panelCampos.add(label1);
         panelCampos.add(campo1);
@@ -44,16 +44,16 @@ public class UI {
         panelCampos.add(campo2);
         panelCampos.add(botonFinalizar);
 
-        // Panel de Selección de Destino
+        // Panel de Bienvenida
         JPanel panelBienvenida = new JPanel();
-        panelBienvenida.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10)); // Layout compacto
+        panelBienvenida.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
         JLabel labelOrigen = new JLabel("Origen:");
         JComboBox<String> comboOrigen = new JComboBox<>(new String[]{"Nueva York", "Los Ángeles", "Miami"});
         JLabel labelDestino = new JLabel("Destino:");
         JComboBox<String> comboDestino = new JComboBox<>(new String[]{"Londres", "París", "Tokio"});
         JButton botonBuscarVuelos = new JButton("Buscar vuelos");
-        botonBuscarVuelos.setPreferredSize(new Dimension(100, 25)); // Tamaño ajustado
-        botonBuscarVuelos.setFont(new Font("Arial", Font.PLAIN, 12)); // Fuente más pequeña
+        botonBuscarVuelos.setPreferredSize(new Dimension(100, 25));
+        botonBuscarVuelos.setFont(new Font("Arial", Font.PLAIN, 12));
 
         panelBienvenida.add(labelOrigen);
         panelBienvenida.add(comboOrigen);
@@ -61,22 +61,9 @@ public class UI {
         panelBienvenida.add(comboDestino);
         panelBienvenida.add(botonBuscarVuelos);
 
-        // Panel de Selección de Método de Pago
-        JPanel panelPago = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        JLabel labelPago = new JLabel("Selecciona método de pago:");
-        JComboBox<String> comboMetodoPago = new JComboBox<>(new String[]{"Tarjeta de Crédito", "PayPal", "Transferencia Bancaria"});
-        JButton botonConfirmarPago = new JButton("Confirmar Pago");
-        botonConfirmarPago.setPreferredSize(new Dimension(120, 25)); // Tamaño ajustado
-        botonConfirmarPago.setFont(new Font("Arial", Font.PLAIN, 12)); // Fuente más pequeña
-
-        panelPago.add(labelPago);
-        panelPago.add(comboMetodoPago);
-        panelPago.add(botonConfirmarPago);
-
         ventana.add(panelInicial, "Panel Inicial");
         ventana.add(panelCampos, "Panel Campos");
         ventana.add(panelBienvenida, "Panel Bienvenida");
-        ventana.add(panelPago, "Panel Pago");
 
         CardLayout cl = (CardLayout) (ventana.getContentPane().getLayout());
 
@@ -101,17 +88,8 @@ public class UI {
             public void actionPerformed(ActionEvent e) {
                 String origenSeleccionado = (String) comboOrigen.getSelectedItem();
                 String destinoSeleccionado = (String) comboDestino.getSelectedItem();
-                JOptionPane.showMessageDialog(ventana, "Vuelos disponibles desde " + origenSeleccionado + " hacia " + destinoSeleccionado);
-                cl.show(ventana.getContentPane(), "Panel Pago");
-            }
-        });
-
-        botonConfirmarPago.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String metodoPagoSeleccionado = (String) comboMetodoPago.getSelectedItem();
-                JOptionPane.showMessageDialog(ventana, "Pago confirmado con " + metodoPagoSeleccionado);
-                // Aquí puedes añadir lógica para procesar el pago
+                // Aquí podrías continuar con la lógica de búsqueda de vuelos
+                abrirSeleccionDeAsientos(ventana, origenSeleccionado, destinoSeleccionado);
             }
         });
 
@@ -120,8 +98,28 @@ public class UI {
     }
 
     private boolean validarCredenciales(String nombreUsuario, String contrasena) {
-        // Lógica para validar credenciales
         return true; // Simulación
+    }
+
+    private void abrirSeleccionDeAsientos(JFrame ventana, String origen, String destino) {
+        JFrame seleccionAsientosFrame = new JFrame("Seleccionar Asiento");
+        seleccionAsientosFrame.setSize(300, 200);
+        seleccionAsientosFrame.setLayout(new GridLayout(5, 5)); // Crear una cuadrícula para asientos
+
+        for (int i = 1; i <= 25; i++) {
+            JButton asiento = new JButton(String.valueOf(i));
+            asiento.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    JOptionPane.showMessageDialog(ventana, "Asiento " + asiento.getText() + " seleccionado.");
+                    seleccionAsientosFrame.dispose();
+                }
+            });
+            seleccionAsientosFrame.add(asiento);
+        }
+
+        seleccionAsientosFrame.setLocationRelativeTo(null);
+        seleccionAsientosFrame.setVisible(true);
     }
 
     public static void main(String[] args) {

@@ -12,11 +12,10 @@ public class Pago {
         this.metodoPago = metodoPago;
         this.pasajero = pasajero;
         this.vuelo = vuelo;
-        this.estadoPago = false; // Por defecto, el pago no se ha realizado
+        this.estadoPago = false;
     }
 
     public boolean realizarPago() {
-        // Aquí podrías conectar con una API de pagos, por ahora simulamos el pago
         if (validarPago()) {
             estadoPago = true;
             guardarPagoEnBD();
@@ -28,17 +27,15 @@ public class Pago {
     }
 
     private boolean validarPago() {
-        // Lógica para validar el pago
-        return true; // Suponiendo que siempre es válido
+        return true; // Simulación
     }
 
     private void generarRecibo() {
-        // Lógica para generar un recibo
         System.out.println("Recibo generado para " + pasajero.getNombre() + " por el monto de " + monto);
     }
 
     private void guardarPagoEnBD() {
-        // Lógica para guardar el pago en la base de datos usando SQLite
+        // Lógica para guardar el pago en la base de datos
     }
 
     // Getters y setters para los atributos según sea necesario
