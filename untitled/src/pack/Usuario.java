@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 public class Usuario {
     private String jdbcURL = "jdbc:mysql://localhost:3306/USUARIO"; // Asegúrate de que esta URL sea correcta
     private String usernameDB = "root"; // Nombre de usuario de la base de datos
-    private String passwordDB = "chacalocura24"; // Contraseña de la base de datos
+    private String passwordDB = "1111"; // Contraseña de la base de datos
 
     // Constructor (si es necesario)
     public Usuario() {

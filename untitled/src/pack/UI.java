@@ -21,25 +21,29 @@ public class UI {
         JButton botonEmpezar = new JButton("Empezar");
         botonEmpezar.setPreferredSize(new Dimension(80, 25));
         botonEmpezar.setFont(new Font("Arial", Font.PLAIN, 12));
+        JButton botonReg = new JButton("Registrarse");
+        botonReg.setPreferredSize(new Dimension(80, 25));
+        botonReg.setFont(new Font("Arial", Font.PLAIN, 12));
 
         panelInicial.add(textoBienvenida);
         panelInicial.add(botonEmpezar);
+        panelInicial.add(botonReg);
 
         // Panel de Login
         JPanel panelLogin = new JPanel();
         panelLogin.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-        JLabel labelUsuario = new JLabel("Nombre:");
-        JTextField campoUsuario = new JTextField(10);
-        JLabel labelContrasena = new JLabel("Contraseña:");
-        JPasswordField campoContrasena = new JPasswordField(10);
+        JLabel labelUsuarioLogin = new JLabel("Nombre:");
+        JTextField campoUsuarioLogin = new JTextField(10);
+        JLabel labelContrasenaLogin = new JLabel("Contraseña:");
+        JPasswordField campoContrasenaLogin = new JPasswordField(10);
         JButton botonAcceder = new JButton("Acceder");
         botonAcceder.setPreferredSize(new Dimension(80, 25));
         botonAcceder.setFont(new Font("Arial", Font.PLAIN, 12));
 
-        panelLogin.add(labelUsuario);
-        panelLogin.add(campoUsuario);
-        panelLogin.add(labelContrasena);
-        panelLogin.add(campoContrasena);
+        panelLogin.add(labelUsuarioLogin);
+        panelLogin.add(campoUsuarioLogin);
+        panelLogin.add(labelContrasenaLogin);
+        panelLogin.add(campoContrasenaLogin);
         panelLogin.add(botonAcceder);
 
         // Panel de Bienvenida
@@ -58,6 +62,23 @@ public class UI {
         panelBienvenida.add(labelDestino);
         panelBienvenida.add(comboDestino);
         panelBienvenida.add(botonBuscarVuelos);
+
+        // Panel de Registro
+        JPanel panelRegistro = new JPanel();
+        panelRegistro.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        JLabel labelUsuarioReg = new JLabel("Nombre de Usuario:");
+        JTextField campoUsuarioReg = new JTextField(15);
+        JLabel labelContrasenaReg = new JLabel("Contraseña:");
+        JPasswordField campoContrasenaReg = new JPasswordField(15);
+        JButton botonRegistro = new JButton("Registrar");
+        botonRegistro.setPreferredSize(new Dimension(100, 25));
+        botonRegistro.setFont(new Font("Arial", Font.PLAIN, 12));
+
+        panelRegistro.add(labelUsuarioReg);
+        panelRegistro.add(campoUsuarioReg);
+        panelRegistro.add(labelContrasenaReg);
+        panelRegistro.add(campoContrasenaReg);
+        panelRegistro.add(botonRegistro);
 
         // Panel de Asientos
         JPanel panelAsientos = new JPanel(new GridBagLayout());
@@ -89,17 +110,19 @@ public class UI {
         ventana.add(panelLogin, "Panel Login");
         ventana.add(panelBienvenida, "Panel Bienvenida");
         ventana.add(panelAsientos, "Panel Asientos");
+        ventana.add(panelRegistro, "Panel Registro");
 
         // Mostrar el panel inicial primero
         cl.show(ventana.getContentPane(), "Panel Inicial");
 
         botonEmpezar.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Login"));
+        botonReg.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Registro"));
 
         botonAcceder.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String nombreUsuario = campoUsuario.getText();
-                String contrasena = new String(campoContrasena.getPassword());
+                String nombreUsuario = campoUsuarioLogin.getText();
+                String contrasena = new String(campoContrasenaLogin.getPassword());
                 Usuario usuario = new Usuario(); // Instanciar la clase Usuario
                 if (usuario.validarCredenciales(nombreUsuario, contrasena)) {
                     JOptionPane.showMessageDialog(ventana, "Acceso concedido.");
