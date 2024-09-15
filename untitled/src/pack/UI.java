@@ -46,13 +46,22 @@ public class UI {
         panelLogin.add(campoContrasenaLogin);
         panelLogin.add(botonAcceder);
 
-        // Panel de Bienvenida
+        // Panel de Bienvenida (actualizado)
         JPanel panelBienvenida = new JPanel();
         panelBienvenida.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+
         JLabel labelOrigen = new JLabel("Origen:");
-        JComboBox<String> comboOrigen = new JComboBox<>(new String[]{"Nueva York", "Los Ángeles", "Miami"});
+        JComboBox<String> comboOrigen = new JComboBox<>(new String[]{
+                "Nueva York - JFK", "Los Ángeles - LAX", "Miami - MIA",
+                "Chicago - ORD", "Dallas - DFW", "San Francisco - SFO"
+        });
+
         JLabel labelDestino = new JLabel("Destino:");
-        JComboBox<String> comboDestino = new JComboBox<>(new String[]{"Londres", "París", "Tokio"});
+        JComboBox<String> comboDestino = new JComboBox<>(new String[]{
+                "Londres - Heathrow", "París - Charles de Gaulle", "Tokio - Narita",
+                "Madrid - Barajas", "Ámsterdam - Schiphol", "Sídney - Kingsford Smith"
+        });
+
         JButton botonBuscarVuelos = new JButton("Buscar vuelos");
         botonBuscarVuelos.setPreferredSize(new Dimension(100, 25));
         botonBuscarVuelos.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -62,6 +71,24 @@ public class UI {
         panelBienvenida.add(labelDestino);
         panelBienvenida.add(comboDestino);
         panelBienvenida.add(botonBuscarVuelos);
+
+        // Acción para buscar vuelos (actualizada)
+        botonBuscarVuelos.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String origenSeleccionado = (String) comboOrigen.getSelectedItem();
+                String destinoSeleccionado = (String) comboDestino.getSelectedItem();
+
+                if (origenSeleccionado.equals(destinoSeleccionado)) {
+                    JOptionPane.showMessageDialog(ventana,
+                            "El origen y el destino no pueden ser iguales. Por favor, selecciona aeropuertos diferentes.");
+                } else {
+                    JOptionPane.showMessageDialog(ventana,
+                            "Buscando vuelos desde " + origenSeleccionado + " hacia " + destinoSeleccionado);
+                    cl.show(ventana.getContentPane(), "Panel Asientos");
+                }
+            }
+        });
 
         // Panel de Registro
         JPanel panelRegistro = new JPanel();
@@ -130,16 +157,6 @@ public class UI {
                 } else {
                     JOptionPane.showMessageDialog(ventana, "Usuario o contraseña incorrectos.");
                 }
-            }
-        });
-
-        botonBuscarVuelos.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String origenSeleccionado = (String) comboOrigen.getSelectedItem();
-                String destinoSeleccionado = (String) comboDestino.getSelectedItem();
-                JOptionPane.showMessageDialog(ventana, "Buscando vuelos desde " + origenSeleccionado + " hacia " + destinoSeleccionado);
-                cl.show(ventana.getContentPane(), "Panel Asientos");
             }
         });
 
