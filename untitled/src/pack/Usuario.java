@@ -6,28 +6,47 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class Usuario {
-    private String jdbcURL = "jdbc:mysql://localhost:3306/USUARIO"; // Asegúrate de que esta URL sea correcta
-    private String usernameDB = "root"; // Nombre de usuario de la base de datos
-    private String passwordDB = "1111"; // Contraseña de la base de datos
+    private String jdbcURL = "jdbc:mysql://localhost:3306/USUARIO";
+    private String usernameDB = "root";
+    private String passwordDB = "1111"; // Contraseña inicial
 
-    // Constructor (si es necesario)
     public Usuario() {
+    }
+
+    // Método para intentar conectar con las dos contraseñas
+    private Connection intentarConexion() {
+        try {
+            // Intentar conectar con la primera contraseña
+            return DriverManager.getConnection(jdbcURL, usernameDB, passwordDB);
+        } catch (Exception e1) {
+            // Si falla, intentar con la segunda contraseña
+            System.out.println("Primera contraseña fallida, intentando con la nueva...");
+            try {
+                passwordDB = "chacalocura24"; // Cambiar la contraseña
+                return DriverManager.getConnection(jdbcURL, usernameDB, passwordDB);
+            } catch (Exception e2) {
+                e2.printStackTrace();
+                return null; // Si también falla con la nueva contraseña, retorna null
+            }
+        }
     }
 
     public boolean validarCredenciales(String nombreUsuario, String contrasena) {
         String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
 
-        try (Connection conexion = DriverManager.getConnection(jdbcURL, usernameDB, passwordDB);
+        try (Connection conexion = intentarConexion();
              PreparedStatement statement = conexion.prepareStatement(sql)) {
+
+            if (conexion == null) {
+                System.out.println("No se pudo establecer la conexión con la base de datos.");
+                return false;
+            }
 
             statement.setString(1, nombreUsuario);
             statement.setString(2, contrasena);
+
             try (ResultSet resultSet = statement.executeQuery()) {
-                if (resultSet.next()) {
-                    return true; // Credenciales válidas
-                } else {
-                    return false; // Credenciales inválidas
-                }
+                return resultSet.next(); // Devuelve true si encuentra un resultado
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -38,8 +57,13 @@ public class Usuario {
     public boolean insertarUsuario(String nombreUsuario, String contrasena, String email) {
         String sql = "INSERT INTO users (username, password, email) VALUES (?, ?, ?)";
 
-        try (Connection conexion = DriverManager.getConnection(jdbcURL, usernameDB, passwordDB);
+        try (Connection conexion = intentarConexion();
              PreparedStatement statement = conexion.prepareStatement(sql)) {
+
+            if (conexion == null) {
+                System.out.println("No se pudo establecer la conexión con la base de datos.");
+                return false;
+            }
 
             statement.setString(1, nombreUsuario);
             statement.setString(2, contrasena);
