@@ -1,6 +1,8 @@
 package pack;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -46,49 +48,31 @@ public class UI {
         panelLogin.add(campoContrasenaLogin);
         panelLogin.add(botonAcceder);
 
-        // Panel de Bienvenida (actualizado)
+        // Panel de Bienvenida
         JPanel panelBienvenida = new JPanel();
         panelBienvenida.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
-
         JLabel labelOrigen = new JLabel("Origen:");
-        JComboBox<String> comboOrigen = new JComboBox<>(new String[]{
-                "Nueva York - JFK", "Los Ángeles - LAX", "Miami - MIA",
-                "Chicago - ORD", "Dallas - DFW", "San Francisco - SFO"
-        });
-
+        JComboBox<String> comboOrigen = new JComboBox<>(new String[]{"Nueva York", "Los Ángeles", "Miami"});
         JLabel labelDestino = new JLabel("Destino:");
-        JComboBox<String> comboDestino = new JComboBox<>(new String[]{
-                "Londres - Heathrow", "París - Charles de Gaulle", "Tokio - Narita",
-                "Madrid - Barajas", "Ámsterdam - Schiphol", "Sídney - Kingsford Smith"
-        });
-
+        JComboBox<String> comboDestino = new JComboBox<>(new String[]{"Londres", "París", "Tokio"});
+        JLabel labelFecha = new JLabel("Fecha de viaje:");
+        JTextField campoFecha = new JTextField(10);
+        campoFecha.setText("dd/MM/yyyy"); // Valor inicial
+        JLabel labelPasajeros = new JLabel("Número de pasajeros:");
+        JComboBox<String> comboPasajeros = new JComboBox<>(new String[]{"1", "2", "3", "4", "5", "6"});
         JButton botonBuscarVuelos = new JButton("Buscar vuelos");
-        botonBuscarVuelos.setPreferredSize(new Dimension(100, 25));
+        botonBuscarVuelos.setPreferredSize(new Dimension(120, 25));
         botonBuscarVuelos.setFont(new Font("Arial", Font.PLAIN, 12));
 
         panelBienvenida.add(labelOrigen);
         panelBienvenida.add(comboOrigen);
         panelBienvenida.add(labelDestino);
         panelBienvenida.add(comboDestino);
+        panelBienvenida.add(labelFecha);
+        panelBienvenida.add(campoFecha);
+        panelBienvenida.add(labelPasajeros);
+        panelBienvenida.add(comboPasajeros);
         panelBienvenida.add(botonBuscarVuelos);
-
-        // Acción para buscar vuelos (actualizada)
-        botonBuscarVuelos.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String origenSeleccionado = (String) comboOrigen.getSelectedItem();
-                String destinoSeleccionado = (String) comboDestino.getSelectedItem();
-
-                if (origenSeleccionado.equals(destinoSeleccionado)) {
-                    JOptionPane.showMessageDialog(ventana,
-                            "El origen y el destino no pueden ser iguales. Por favor, selecciona aeropuertos diferentes.");
-                } else {
-                    JOptionPane.showMessageDialog(ventana,
-                            "Buscando vuelos desde " + origenSeleccionado + " hacia " + destinoSeleccionado);
-                    cl.show(ventana.getContentPane(), "Panel Asientos");
-                }
-            }
-        });
 
         // Panel de Registro
         JPanel panelRegistro = new JPanel();
@@ -132,12 +116,28 @@ public class UI {
             }
         }
 
+        // Panel de Resultados de Búsqueda
+        JPanel panelResultados = new JPanel(new BorderLayout());
+        String[] columnNames = {"Seleccionar", "Aerolínea", "Horario", "Duración", "Precio"};
+        DefaultTableModel model = new DefaultTableModel(columnNames, 0);
+        JTable tablaVuelos = new JTable(model);
+        tablaVuelos.setPreferredScrollableViewportSize(new Dimension(500, 200));
+        tablaVuelos.setFillsViewportHeight(true);
+
+        JScrollPane scrollPane = new JScrollPane(tablaVuelos);
+        panelResultados.add(scrollPane, BorderLayout.CENTER);
+
+        JButton botonAceptar = new JButton("Aceptar");
+        botonAceptar.setEnabled(false); // Inicialmente deshabilitado
+        panelResultados.add(botonAceptar, BorderLayout.SOUTH);
+
         // Añadir los paneles a la ventana
         ventana.add(panelInicial, "Panel Inicial");
         ventana.add(panelLogin, "Panel Login");
         ventana.add(panelBienvenida, "Panel Bienvenida");
         ventana.add(panelAsientos, "Panel Asientos");
         ventana.add(panelRegistro, "Panel Registro");
+        ventana.add(panelResultados, "Panel Resultados");
 
         // Mostrar el panel inicial primero
         cl.show(ventana.getContentPane(), "Panel Inicial");
@@ -145,26 +145,63 @@ public class UI {
         botonEmpezar.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Login"));
         botonReg.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Registro"));
 
-        botonAcceder.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String nombreUsuario = campoUsuarioLogin.getText();
-                String contrasena = new String(campoContrasenaLogin.getPassword());
-                Usuario usuario = new Usuario(); // Instanciar la clase Usuario
-                if (usuario.validarCredenciales(nombreUsuario, contrasena)) {
-                    JOptionPane.showMessageDialog(ventana, "Acceso concedido.");
-                    cl.show(ventana.getContentPane(), "Panel Bienvenida");
-                } else {
-                    JOptionPane.showMessageDialog(ventana, "Usuario o contraseña incorrectos.");
-                }
+        botonAcceder.addActionListener(e -> {
+            String nombreUsuario = campoUsuarioLogin.getText();
+            String contrasena = new String(campoContrasenaLogin.getPassword());
+            Usuario usuario = new Usuario(); // Instanciar la clase Usuario
+            if (usuario.validarCredenciales(nombreUsuario, contrasena)) {
+                JOptionPane.showMessageDialog(ventana, "Acceso concedido.");
+                cl.show(ventana.getContentPane(), "Panel Bienvenida");
+            } else {
+                JOptionPane.showMessageDialog(ventana, "Usuario o contraseña incorrectos.");
             }
         });
 
-        ventana.setLocationRelativeTo(null);
+        botonBuscarVuelos.addActionListener(e -> {
+            String origenSeleccionado = (String) comboOrigen.getSelectedItem();
+            String destinoSeleccionado = (String) comboDestino.getSelectedItem();
+            String fechaSeleccionada = campoFecha.getText();
+            String pasajerosSeleccionados = (String) comboPasajeros.getSelectedItem();
+
+            // Limpiar la tabla antes de agregar nuevos resultados
+            model.setRowCount(0);
+
+            // Agregar resultados de ejemplo
+            model.addRow(new Object[]{false, "Aerolínea 1", "10:00", "2h", "$200"});
+            model.addRow(new Object[]{false, "Aerolínea 2", "14:00", "3h", "$250"});
+            model.addRow(new Object[]{false, "Aerolínea 3", "18:00", "1h 30m", "$180"});
+
+            cl.show(ventana.getContentPane(), "Panel Resultados");
+        });
+
+        tablaVuelos.getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                JCheckBox checkBox = new JCheckBox();
+                checkBox.setSelected((Boolean) value);
+                return checkBox;
+            }
+        });
+
+        tablaVuelos.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JCheckBox()));
+
+        // Acción para habilitar el botón Aceptar solo si hay una sola casilla marcada
+        tablaVuelos.getModel().addTableModelListener(e -> {
+            int selectedCount = 0;
+            for (int i = 0; i < tablaVuelos.getRowCount(); i++) {
+                if ((Boolean) tablaVuelos.getValueAt(i, 0)) {
+                    selectedCount++;
+                }
+            }
+            botonAceptar.setEnabled(selectedCount == 1);
+        });
+
+        botonAceptar.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Asientos"));
+
         ventana.setVisible(true);
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(UI::new);
+        new UI();
     }
 }
