@@ -4,6 +4,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -131,7 +132,7 @@ public class UI {
 
         // Panel de Resultados de Búsqueda
         JPanel panelResultados = new JPanel(new BorderLayout());
-        String[] columnNames = {"Seleccionar", "Aerolínea", "Horario", "Duración", "Precio"};
+        String[] columnNames = {"Seleccionar", "Origen", "Destino", "Fecha de ida", "Fecha de vuelta"};
         DefaultTableModel model = new DefaultTableModel(columnNames, 0);
         JTable tablaVuelos = new JTable(model);
         tablaVuelos.setPreferredScrollableViewportSize(new Dimension(500, 200));
@@ -192,18 +193,20 @@ public class UI {
             String fechavSeleccionada = campoFechav.getText();
 
             Vuelo vuelo = new Vuelo();
-            vuelo.consultarVuelos(origenSeleccionado, destinoSeleccionado, fechaSeleccionada, fechavSeleccionada);
+            List<Vuelo> vuelos = vuelo.consultarVuelos(origenSeleccionado, destinoSeleccionado, fechaSeleccionada, fechavSeleccionada);
 
             // Limpiar la tabla antes de agregar nuevos resultados
             model.setRowCount(0);
 
-            // Agregar resultados de ejemplo
-            model.addRow(new Object[]{false, "Aerolínea 1", "10:00", "2h", "$200"});
-            model.addRow(new Object[]{false, "Aerolínea 2", "14:00", "3h", "$250"});
-            model.addRow(new Object[]{false, "Aerolínea 3", "18:00", "1h 30m", "$180"});
+            // Recorrer la lista de vuelos obtenidos y agregarlos a la tabla
+            for (Vuelo v : vuelos) {
+                model.addRow(new Object[]{false, v.getOrigen(), v.getDestino(), v.getFechaIda(),v.getFechaVuelta()});
+            }
 
+            // Cambiar al panel de resultados
             cl.show(ventana.getContentPane(), "Panel Resultados");
         });
+
 
 
         tablaVuelos.getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer() {

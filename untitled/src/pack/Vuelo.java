@@ -5,23 +5,32 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Vuelo {
     private String origen;
     private String destino;
+    private String fechaIda;
+    private String fechaVuelta;
     private static final String JDBC_URL = "jdbc:mysql://localhost:3306/USUARIO";
     private static final String USERNAME_DB = "root";
     private static final String PASSWORD_DB_1 = "1111"; // Primera contraseña
     private static final String PASSWORD_DB_2 = "chacalocura24"; // Segunda contraseña
 
+    // Constructor vacío
     public Vuelo() {
     }
 
-    public Vuelo(String origen, String destino) {
+    // Constructor con origen, destino, fechaIda y fechaVuelta
+    public Vuelo(String origen, String destino, String fechaIda, String fechaVuelta) {
         this.origen = origen;
         this.destino = destino;
+        this.fechaIda = fechaIda;
+        this.fechaVuelta = fechaVuelta;
     }
 
+    // Getters y setters
     public String getOrigen() {
         return origen;
     }
@@ -38,59 +47,67 @@ public class Vuelo {
         this.destino = destino;
     }
 
-    // Método para intentar conectar con las dos contraseñas
+    public String getFechaIda() {
+        return fechaIda;
+    }
+
+    public void setFechaIda(String fechaIda) {
+        this.fechaIda = fechaIda;
+    }
+
+    public String getFechaVuelta() {
+        return fechaVuelta;
+    }
+
+    public void setFechaVuelta(String fechaVuelta) {
+        this.fechaVuelta = fechaVuelta;
+    }
+
+    // Método para intentar la conexión a la base de datos con dos contraseñas
     private Connection intentarConexion() {
         try {
-            // Intentar conectar con la primera contraseña
             return DriverManager.getConnection(JDBC_URL, USERNAME_DB, PASSWORD_DB_1);
         } catch (SQLException e1) {
-            // Si falla, intentar con la segunda contraseña
             System.out.println("Primera contraseña fallida, intentando con la nueva...");
             try {
                 return DriverManager.getConnection(JDBC_URL, USERNAME_DB, PASSWORD_DB_2);
             } catch (SQLException e2) {
                 System.err.println("Conexión fallida con ambas contraseñas: " + e2.getMessage());
-                return null; // Si también falla con la nueva contraseña, retorna null
+                return null;
             }
         }
     }
 
     // Método para consultar vuelos basado en origen, destino, fecha de ida y fecha de vuelta
-    public void consultarVuelos(String origen, String destino, String fechaIda, String fechaVuelta) {
+    public List<Vuelo> consultarVuelos(String origen, String destino, String fechaIda, String fechaVuelta) {
         String query = "SELECT * FROM vuelos WHERE origen = ? AND destino = ? AND fecha_ida = ? AND fecha_vuelta = ?";
+        List<Vuelo> listaVuelos = new ArrayList<>();
 
-        try (Connection conn = intentarConexion(); // Usar el método de conexión modificado
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-
+        try (Connection conn = intentarConexion()) {
             if (conn == null) {
-                System.err.println("No se pudo establecer una conexión con la base de datos.");
-                return;
+                System.err.println("No se pudo establecer la conexión.");
+                return listaVuelos; // Retorna la lista vacía
             }
 
-            // Asignar los parámetros a la consulta
-            stmt.setString(1, origen);
-            stmt.setString(2, destino);
-            stmt.setString(3, fechaIda);
-            stmt.setString(4, fechaVuelta);
+            try (PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setString(1, origen);
+                stmt.setString(2, destino);
+                stmt.setString(3, fechaIda);
+                stmt.setString(4, fechaVuelta);
 
-            // Ejecutar la consulta
-            ResultSet rs = stmt.executeQuery();
+                ResultSet rs = stmt.executeQuery();
 
-            // Recorrer y mostrar los resultados
-            while (rs.next()) {
-                int idVuelo = rs.getInt("id_vuelo");
-                String aerolinea = rs.getString("aerolinea");
-                int precio = rs.getInt("precio");
-                int duracion = rs.getInt("duracion");
-                int numeroPasajeros = rs.getInt("numero_pasajeros");
-
-                // Imprimir o procesar los datos obtenidos
-                System.out.println("ID Vuelo: " + idVuelo + ", Aerolínea: " + aerolinea + ", Precio: " + precio +
-                        ", Duración: " + duracion + " horas, Pasajeros: " + numeroPasajeros);
+                while (rs.next()) {
+                    // Creación de un objeto Vuelo para cada fila de resultado
+                    Vuelo vuelo = new Vuelo(rs.getString("origen"), rs.getString("destino"), rs.getString("fecha_ida"), rs.getString("fecha_vuelta"));
+                    listaVuelos.add(vuelo);
+                }
             }
 
         } catch (SQLException e) {
             System.err.println("Error al consultar los vuelos: " + e.getMessage());
         }
+
+        return listaVuelos; // Devuelve la lista de vuelos encontrados
     }
 }
