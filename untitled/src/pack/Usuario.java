@@ -54,8 +54,8 @@ public class Usuario {
         }
     }
 
-    public boolean insertarUsuario(String nombreUsuario, String contrasena, String email) {
-        String sql = "INSERT INTO users (username, password, email) VALUES (?, ?, ?)";
+    public boolean insertarUsuario(String nombreUsuario, String contrasena, String email, String telefono) {
+        String sql = "INSERT INTO users (username, password, email, telefono) VALUES (?, ?, ?,?)";
 
         try (Connection conexion = intentarConexion();
              PreparedStatement statement = conexion.prepareStatement(sql)) {
@@ -68,6 +68,7 @@ public class Usuario {
             statement.setString(1, nombreUsuario);
             statement.setString(2, contrasena);
             statement.setString(3, email);
+            statement.setString(4, telefono);
             int filasAfectadas = statement.executeUpdate();
             return filasAfectadas > 0;
         } catch (Exception e) {

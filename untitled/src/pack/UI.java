@@ -80,6 +80,10 @@ public class UI {
         JLabel labelUsuarioReg = new JLabel("Nombre de Usuario:");
         JTextField campoUsuarioReg = new JTextField(15);
         JLabel labelContrasenaReg = new JLabel("Contraseña:");
+        JTextField campoTelReg = new JTextField(15);
+        JLabel labelTelReg = new JLabel("Telefono:");
+        JTextField campoCorreoReg = new JTextField(15);
+        JLabel labelCorreoReg = new JLabel("Correo:");
         JPasswordField campoContrasenaReg = new JPasswordField(15);
         JButton botonRegistro = new JButton("Registrar");
         botonRegistro.setPreferredSize(new Dimension(100, 25));
@@ -89,6 +93,10 @@ public class UI {
         panelRegistro.add(campoUsuarioReg);
         panelRegistro.add(labelContrasenaReg);
         panelRegistro.add(campoContrasenaReg);
+        panelRegistro.add(labelTelReg);
+        panelRegistro.add(campoTelReg);
+        panelRegistro.add(labelCorreoReg);
+        panelRegistro.add(campoCorreoReg);
         panelRegistro.add(botonRegistro);
 
         // Panel de Asientos
@@ -144,6 +152,21 @@ public class UI {
 
         botonEmpezar.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Login"));
         botonReg.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Registro"));
+
+        botonRegistro.addActionListener(e -> {
+            String nombreUsuario = campoUsuarioReg.getText();
+            String contrasena = campoContrasenaReg.getText();
+            String telefono = campoTelReg.getText();
+            String email = campoCorreoReg.getText();
+            Usuario usuario = new Usuario();
+            if (usuario.insertarUsuario(nombreUsuario, contrasena, email, telefono)) {
+                JOptionPane.showMessageDialog(ventana, "Registro exitoso.");
+            } else {
+                JOptionPane.showMessageDialog(ventana, "Error en el registro. Por favor, revisa los datos.");
+            }
+        });
+
+
 
         botonAcceder.addActionListener(e -> {
             String nombreUsuario = campoUsuarioLogin.getText();
