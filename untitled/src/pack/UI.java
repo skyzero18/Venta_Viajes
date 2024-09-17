@@ -34,16 +34,16 @@ public class UI {
         // Panel de Login
         JPanel panelLogin = new JPanel();
         panelLogin.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-        JLabel labelUsuarioLogin = new JLabel("Nombre:");
-        JTextField campoUsuarioLogin = new JTextField(10);
+        JLabel labelEmailLogin = new JLabel("Email:");
+        JTextField campoEmailLogin = new JTextField(10);
         JLabel labelContrasenaLogin = new JLabel("Contraseña:");
         JPasswordField campoContrasenaLogin = new JPasswordField(10);
         JButton botonAcceder = new JButton("Acceder");
         botonAcceder.setPreferredSize(new Dimension(80, 25));
         botonAcceder.setFont(new Font("Arial", Font.PLAIN, 12));
 
-        panelLogin.add(labelUsuarioLogin);
-        panelLogin.add(campoUsuarioLogin);
+        panelLogin.add(labelEmailLogin);
+        panelLogin.add(campoEmailLogin);
         panelLogin.add(labelContrasenaLogin);
         panelLogin.add(campoContrasenaLogin);
         panelLogin.add(botonAcceder);
@@ -52,12 +52,15 @@ public class UI {
         JPanel panelBienvenida = new JPanel();
         panelBienvenida.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
         JLabel labelOrigen = new JLabel("Origen:");
-        JComboBox<String> comboOrigen = new JComboBox<>(new String[]{"Nueva York", "Los Ángeles", "Miami"});
+        JComboBox<String> comboOrigen = new JComboBox<>(new String[]{"Mendoza", "San Luis", "San Juan"});
         JLabel labelDestino = new JLabel("Destino:");
         JComboBox<String> comboDestino = new JComboBox<>(new String[]{"Londres", "París", "Tokio"});
-        JLabel labelFecha = new JLabel("Fecha de viaje:");
-        JTextField campoFecha = new JTextField(10);
-        campoFecha.setText("dd/MM/yyyy"); // Valor inicial
+        JLabel labelFechas = new JLabel("Fecha de ida");
+        JTextField campoFechas = new JTextField(10);
+        campoFechas.setText("yyyy-mm-dd");
+        JLabel labelFechav = new JLabel("Fecha de vuelta");
+        JTextField campoFechav = new JTextField(10);
+        campoFechav.setText("yyyy-mm-dd"); // Valor inicial
         JLabel labelPasajeros = new JLabel("Número de pasajeros:");
         JComboBox<String> comboPasajeros = new JComboBox<>(new String[]{"1", "2", "3", "4", "5", "6"});
         JButton botonBuscarVuelos = new JButton("Buscar vuelos");
@@ -68,8 +71,10 @@ public class UI {
         panelBienvenida.add(comboOrigen);
         panelBienvenida.add(labelDestino);
         panelBienvenida.add(comboDestino);
-        panelBienvenida.add(labelFecha);
-        panelBienvenida.add(campoFecha);
+        panelBienvenida.add(labelFechas);
+        panelBienvenida.add(campoFechas);
+        panelBienvenida.add(labelFechav);
+        panelBienvenida.add(campoFechav);
         panelBienvenida.add(labelPasajeros);
         panelBienvenida.add(comboPasajeros);
         panelBienvenida.add(botonBuscarVuelos);
@@ -169,10 +174,10 @@ public class UI {
 
 
         botonAcceder.addActionListener(e -> {
-            String nombreUsuario = campoUsuarioLogin.getText();
+            String email = campoEmailLogin.getText();
             String contrasena = new String(campoContrasenaLogin.getPassword());
             Usuario usuario = new Usuario(); // Instanciar la clase Usuario
-            if (usuario.validarCredenciales(nombreUsuario, contrasena)) {
+            if (usuario.validarCredenciales(email, contrasena)) {
                 JOptionPane.showMessageDialog(ventana, "Acceso concedido.");
                 cl.show(ventana.getContentPane(), "Panel Bienvenida");
             } else {
@@ -183,8 +188,11 @@ public class UI {
         botonBuscarVuelos.addActionListener(e -> {
             String origenSeleccionado = (String) comboOrigen.getSelectedItem();
             String destinoSeleccionado = (String) comboDestino.getSelectedItem();
-            String fechaSeleccionada = campoFecha.getText();
-            String pasajerosSeleccionados = (String) comboPasajeros.getSelectedItem();
+            String fechaSeleccionada = campoFechas.getText();
+            String fechavSeleccionada = campoFechav.getText();
+
+            Vuelo vuelo = new Vuelo();
+            vuelo.consultarVuelos(origenSeleccionado, destinoSeleccionado, fechaSeleccionada, fechavSeleccionada);
 
             // Limpiar la tabla antes de agregar nuevos resultados
             model.setRowCount(0);
@@ -196,6 +204,7 @@ public class UI {
 
             cl.show(ventana.getContentPane(), "Panel Resultados");
         });
+
 
         tablaVuelos.getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer() {
             @Override

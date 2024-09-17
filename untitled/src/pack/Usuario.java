@@ -31,8 +31,8 @@ public class Usuario {
         }
     }
 
-    public boolean validarCredenciales(String nombreUsuario, String contrasena) {
-        String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+    public boolean validarCredenciales(String email, String contrasena) {
+        String sql = "SELECT * FROM users WHERE email = ? AND password = ?";
 
         try (Connection conexion = intentarConexion();
              PreparedStatement statement = conexion.prepareStatement(sql)) {
@@ -42,7 +42,7 @@ public class Usuario {
                 return false;
             }
 
-            statement.setString(1, nombreUsuario);
+            statement.setString(1, email);
             statement.setString(2, contrasena);
 
             try (ResultSet resultSet = statement.executeQuery()) {
