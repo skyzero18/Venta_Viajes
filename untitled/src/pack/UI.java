@@ -10,7 +10,7 @@ public class UI {
     public UI() {
         JFrame ventana = new JFrame("FLY US");
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        ventana.setSize(600, 400); // Ventana más grande para acomodar los asientos
+        ventana.setSize(600, 600); // Ventana más grande para acomodar todo
         ventana.setLayout(new CardLayout()); // Configuración de CardLayout
 
         CardLayout cl = (CardLayout) ventana.getContentPane().getLayout();
@@ -20,30 +20,13 @@ public class UI {
         JLabel textoBienvenida = new JLabel("¡Bienvenido a FlyUS!", SwingConstants.CENTER);
         textoBienvenida.setFont(new Font("Arial", Font.BOLD, 16));
         JButton botonEmpezar = new JButton("Empezar");
-        botonEmpezar.setPreferredSize(new Dimension(80, 25));
-        botonEmpezar.setFont(new Font("Arial", Font.PLAIN, 12));
         JButton botonReg = new JButton("Registrarse");
-        botonReg.setPreferredSize(new Dimension(80, 25));
-        botonReg.setFont(new Font("Arial", Font.PLAIN, 12));
         JButton botonPerf = new JButton("Perfil de usuario");
-        botonPerf.setPreferredSize(new Dimension(80, 25));
-        botonPerf.setFont(new Font("Arial", Font.PLAIN, 12));
 
         panelInicial.add(textoBienvenida);
         panelInicial.add(botonEmpezar);
         panelInicial.add(botonReg);
         panelInicial.add(botonPerf);
-
-        //Panel de Perfil
-        JPanel panelPerfil = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        JLabel textoPerfil = new JLabel("Perfil", SwingConstants.CENTER);
-        textoPerfil.setFont(new Font("Arial", Font.BOLD, 16));
-        JButton botonVolPf = new JButton("Volver");
-        botonVolPf.setPreferredSize(new Dimension(80, 25));
-        botonVolPf.setFont(new Font("Arial", Font.PLAIN, 12));
-
-        panelPerfil.add(textoPerfil);
-        panelPerfil.add(botonVolPf);
 
         // Panel de Login
         JPanel panelLogin = new JPanel();
@@ -53,11 +36,7 @@ public class UI {
         JLabel labelContrasenaLogin = new JLabel("Contraseña:");
         JPasswordField campoContrasenaLogin = new JPasswordField(10);
         JButton botonAcceder = new JButton("Acceder");
-        botonAcceder.setPreferredSize(new Dimension(80, 25));
-        botonAcceder.setFont(new Font("Arial", Font.PLAIN, 12));
         JButton botonVolLg = new JButton("Volver");
-        botonVolLg.setPreferredSize(new Dimension(80, 25));
-        botonVolLg.setFont(new Font("Arial", Font.PLAIN, 12));
 
         panelLogin.add(labelEmailLogin);
         panelLogin.add(campoEmailLogin);
@@ -65,41 +44,6 @@ public class UI {
         panelLogin.add(campoContrasenaLogin);
         panelLogin.add(botonAcceder);
         panelLogin.add(botonVolLg);
-
-        // Panel de Bienvenida
-        JPanel panelBienvenida = new JPanel();
-        panelBienvenida.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        JLabel labelOrigen = new JLabel("Origen:");
-        JComboBox<String> comboOrigen = new JComboBox<>(new String[]{"Mendoza", "San Luis", "San Juan"});
-        JLabel labelDestino = new JLabel("Destino:");
-        JComboBox<String> comboDestino = new JComboBox<>(new String[]{"Londres", "París", "Tokio"});
-        JLabel labelFechas = new JLabel("Fecha de ida");
-        JTextField campoFechas = new JTextField(10);
-        campoFechas.setText("yyyy-mm-dd");
-        JLabel labelFechav = new JLabel("Fecha de vuelta");
-        JTextField campoFechav = new JTextField(10);
-        campoFechav.setText("yyyy-mm-dd"); // Valor inicial
-        JLabel labelPasajeros = new JLabel("Número de pasajeros:");
-        JComboBox<String> comboPasajeros = new JComboBox<>(new String[]{"1", "2", "3", "4", "5", "6"});
-        JButton botonBuscarVuelos = new JButton("Buscar vuelos");
-        botonBuscarVuelos.setPreferredSize(new Dimension(120, 25));
-        botonBuscarVuelos.setFont(new Font("Arial", Font.PLAIN, 12));
-        JButton botonVolBv = new JButton("volver");
-        botonVolBv.setPreferredSize(new Dimension(100, 25));
-        botonVolBv.setFont(new Font("Arial", Font.PLAIN, 12));
-
-        panelBienvenida.add(labelOrigen);
-        panelBienvenida.add(comboOrigen);
-        panelBienvenida.add(labelDestino);
-        panelBienvenida.add(comboDestino);
-        panelBienvenida.add(labelFechas);
-        panelBienvenida.add(campoFechas);
-        panelBienvenida.add(labelFechav);
-        panelBienvenida.add(campoFechav);
-        panelBienvenida.add(labelPasajeros);
-        panelBienvenida.add(comboPasajeros);
-        panelBienvenida.add(botonBuscarVuelos);
-        panelBienvenida.add(botonVolBv);
 
         // Panel de Registro
         JPanel panelRegistro = new JPanel();
@@ -113,11 +57,7 @@ public class UI {
         JLabel labelCorreoReg = new JLabel("Correo:");
         JPasswordField campoContrasenaReg = new JPasswordField(15);
         JButton botonRegistro = new JButton("Registrar");
-        botonRegistro.setPreferredSize(new Dimension(100, 25));
-        botonRegistro.setFont(new Font("Arial", Font.PLAIN, 12));
         JButton botonVolR = new JButton("volver");
-        botonVolR.setPreferredSize(new Dimension(100, 25));
-        botonVolR.setFont(new Font("Arial", Font.PLAIN, 12));
 
         panelRegistro.add(labelUsuarioReg);
         panelRegistro.add(campoUsuarioReg);
@@ -130,32 +70,48 @@ public class UI {
         panelRegistro.add(botonRegistro);
         panelRegistro.add(botonVolR);
 
-        // Panel de Asientos
-        JPanel panelAsientos = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
+        // Panel de Perfil
+        JPanel panelPerfil = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        JLabel textoPerfil = new JLabel("Perfil", SwingConstants.CENTER);
+        textoPerfil.setFont(new Font("Arial", Font.BOLD, 16));
+        JButton botonVolPf = new JButton("Volver");
 
-        int numRows = 6; // Número de filas
-        int numCols = 4; // Dos columnas a cada lado del pasillo
+        panelPerfil.add(textoPerfil);
+        panelPerfil.add(botonVolPf);
 
-        // Crear botones para asientos
-        JButton[][] asientos = new JButton[numRows][numCols];
+        // Panel de Bienvenida con el formulario y la tabla
+        JPanel panelBienvenida = new JPanel();
+        panelBienvenida.setLayout(new BorderLayout());
 
-        for (int i = 0; i < numRows; i++) {
-            for (int j = 0; j < numCols; j++) {
-                gbc.gridy = i;
-                if (j == 2) {
-                    gbc.gridx = j + 1;
-                } else {
-                    gbc.gridx = j;
-                }
+        JPanel panelFiltros = new JPanel();
+        panelFiltros.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
 
-                asientos[i][j] = new JButton("A" + (i + 1) + (j + 1));
-                panelAsientos.add(asientos[i][j], gbc);
-            }
-        }
+        JLabel labelOrigen = new JLabel("Origen:");
+        JComboBox<String> comboOrigen = new JComboBox<>(new String[]{"Mendoza", "San Luis", "San Juan"});
+        JLabel labelDestino = new JLabel("Destino:");
+        JComboBox<String> comboDestino = new JComboBox<>(new String[]{"Londres", "París", "Tokio"});
+        JLabel labelFechas = new JLabel("Fecha de ida");
+        JTextField campoFechas = new JTextField(10);
+        campoFechas.setText("yyyy-mm-dd");
+        JLabel labelFechav = new JLabel("Fecha de vuelta");
+        JTextField campoFechav = new JTextField(10);
+        campoFechav.setText("yyyy-mm-dd"); // Valor inicial
+        JLabel labelPasajeros = new JLabel("Número de pasajeros:");
+        JComboBox<String> comboPasajeros = new JComboBox<>(new String[]{"1", "2", "3", "4", "5", "6"});
+        JButton botonBuscarVuelos = new JButton("Buscar vuelos");
 
-        // Panel de Resultados de Búsqueda
+        panelFiltros.add(labelOrigen);
+        panelFiltros.add(comboOrigen);
+        panelFiltros.add(labelDestino);
+        panelFiltros.add(comboDestino);
+        panelFiltros.add(labelFechas);
+        panelFiltros.add(campoFechas);
+        panelFiltros.add(labelFechav);
+        panelFiltros.add(campoFechav);
+        panelFiltros.add(labelPasajeros);
+        panelFiltros.add(botonBuscarVuelos);
+
+        // Panel de Resultados de Búsqueda (Tabla dentro del mismo panel)
         JPanel panelResultados = new JPanel(new BorderLayout());
         String[] columnNames = {"Seleccionar", "Origen", "Destino", "Fecha de ida", "Fecha de vuelta"};
         DefaultTableModel model = new DefaultTableModel(columnNames, 0);
@@ -170,25 +126,39 @@ public class UI {
         botonAceptar.setEnabled(false); // Inicialmente deshabilitado
         panelResultados.add(botonAceptar, BorderLayout.SOUTH);
 
+        // Añadir panelFiltros y panelResultados al panel principal
+        panelBienvenida.add(panelFiltros, BorderLayout.NORTH);
+        panelBienvenida.add(panelResultados, BorderLayout.CENTER);
+
         // Añadir los paneles a la ventana
         ventana.add(panelInicial, "Panel Inicial");
         ventana.add(panelLogin, "Panel Login");
         ventana.add(panelBienvenida, "Panel Bienvenida");
-        ventana.add(panelAsientos, "Panel Asientos");
         ventana.add(panelRegistro, "Panel Registro");
-        ventana.add(panelResultados, "Panel Resultados");
-        ventana.add(panelPerfil,"Panel Perfil");
+        ventana.add(panelPerfil, "Panel Perfil");
 
         // Mostrar el panel inicial primero
         cl.show(ventana.getContentPane(), "Panel Inicial");
 
+        // Acciones de los botones
         botonEmpezar.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Login"));
         botonReg.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Registro"));
         botonPerf.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Perfil"));
         botonVolR.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Inicial"));
-        botonVolBv.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Inicial"));
-        botonVolPf.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Inicial"));
         botonVolLg.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Inicial"));
+        botonVolPf.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Inicial"));
+
+        botonAcceder.addActionListener(e -> {
+            String email = campoEmailLogin.getText();
+            String contrasena = new String(campoContrasenaLogin.getPassword());
+            Usuario usuario = new Usuario(); // Instanciar la clase Usuario
+            if (usuario.validarCredenciales(email, contrasena)) {
+                JOptionPane.showMessageDialog(ventana, "Acceso concedido.");
+                cl.show(ventana.getContentPane(), "Panel Bienvenida");
+            } else {
+                JOptionPane.showMessageDialog(ventana, "Usuario o contraseña incorrectos.");
+            }
+        });
 
         botonRegistro.addActionListener(e -> {
             String nombreUsuario = campoUsuarioReg.getText();
@@ -200,20 +170,6 @@ public class UI {
                 JOptionPane.showMessageDialog(ventana, "Registro exitoso.");
             } else {
                 JOptionPane.showMessageDialog(ventana, "Error en el registro. Por favor, revisa los datos.");
-            }
-        });
-
-
-
-        botonAcceder.addActionListener(e -> {
-            String email = campoEmailLogin.getText();
-            String contrasena = new String(campoContrasenaLogin.getPassword());
-            Usuario usuario = new Usuario(); // Instanciar la clase Usuario
-            if (usuario.validarCredenciales(email, contrasena)) {
-                JOptionPane.showMessageDialog(ventana, "Acceso concedido.");
-                cl.show(ventana.getContentPane(), "Panel Bienvenida");
-            } else {
-                JOptionPane.showMessageDialog(ventana, "Usuario o contraseña incorrectos.");
             }
         });
 
@@ -231,14 +187,9 @@ public class UI {
 
             // Recorrer la lista de vuelos obtenidos y agregarlos a la tabla
             for (Vuelo v : vuelos) {
-                model.addRow(new Object[]{false, v.getOrigen(), v.getDestino(), v.getFechaIda(),v.getFechaVuelta()});
+                model.addRow(new Object[]{false, v.getOrigen(), v.getDestino(), v.getFechaIda(), v.getFechaVuelta()});
             }
-
-            // Cambiar al panel de resultados
-            cl.show(ventana.getContentPane(), "Panel Resultados");
         });
-
-
 
         tablaVuelos.getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer() {
             @Override
@@ -259,10 +210,8 @@ public class UI {
                     selectedCount++;
                 }
             }
-            botonAceptar.setEnabled(selectedCount==1);
+            botonAceptar.setEnabled(selectedCount == 1);
         });
-
-        botonAceptar.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Asientos"));
 
         ventana.setVisible(true);
     }
