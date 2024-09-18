@@ -5,8 +5,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class UI {
     public UI() {
@@ -27,10 +25,25 @@ public class UI {
         JButton botonReg = new JButton("Registrarse");
         botonReg.setPreferredSize(new Dimension(80, 25));
         botonReg.setFont(new Font("Arial", Font.PLAIN, 12));
+        JButton botonPerf = new JButton("Perfil de usuario");
+        botonPerf.setPreferredSize(new Dimension(80, 25));
+        botonPerf.setFont(new Font("Arial", Font.PLAIN, 12));
 
         panelInicial.add(textoBienvenida);
         panelInicial.add(botonEmpezar);
         panelInicial.add(botonReg);
+        panelInicial.add(botonPerf);
+
+        //Panel de Perfil
+        JPanel panelPerfil = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        JLabel textoPerfil = new JLabel("Perfil", SwingConstants.CENTER);
+        textoPerfil.setFont(new Font("Arial", Font.BOLD, 16));
+        JButton botonVolPf = new JButton("Volver");
+        botonVolPf.setPreferredSize(new Dimension(80, 25));
+        botonVolPf.setFont(new Font("Arial", Font.PLAIN, 12));
+
+        panelPerfil.add(textoPerfil);
+        panelPerfil.add(botonVolPf);
 
         // Panel de Login
         JPanel panelLogin = new JPanel();
@@ -42,12 +55,16 @@ public class UI {
         JButton botonAcceder = new JButton("Acceder");
         botonAcceder.setPreferredSize(new Dimension(80, 25));
         botonAcceder.setFont(new Font("Arial", Font.PLAIN, 12));
+        JButton botonVolLg = new JButton("Volver");
+        botonVolLg.setPreferredSize(new Dimension(80, 25));
+        botonVolLg.setFont(new Font("Arial", Font.PLAIN, 12));
 
         panelLogin.add(labelEmailLogin);
         panelLogin.add(campoEmailLogin);
         panelLogin.add(labelContrasenaLogin);
         panelLogin.add(campoContrasenaLogin);
         panelLogin.add(botonAcceder);
+        panelLogin.add(botonVolLg);
 
         // Panel de Bienvenida
         JPanel panelBienvenida = new JPanel();
@@ -67,6 +84,9 @@ public class UI {
         JButton botonBuscarVuelos = new JButton("Buscar vuelos");
         botonBuscarVuelos.setPreferredSize(new Dimension(120, 25));
         botonBuscarVuelos.setFont(new Font("Arial", Font.PLAIN, 12));
+        JButton botonVolBv = new JButton("volver");
+        botonVolBv.setPreferredSize(new Dimension(100, 25));
+        botonVolBv.setFont(new Font("Arial", Font.PLAIN, 12));
 
         panelBienvenida.add(labelOrigen);
         panelBienvenida.add(comboOrigen);
@@ -79,6 +99,7 @@ public class UI {
         panelBienvenida.add(labelPasajeros);
         panelBienvenida.add(comboPasajeros);
         panelBienvenida.add(botonBuscarVuelos);
+        panelBienvenida.add(botonVolBv);
 
         // Panel de Registro
         JPanel panelRegistro = new JPanel();
@@ -94,6 +115,9 @@ public class UI {
         JButton botonRegistro = new JButton("Registrar");
         botonRegistro.setPreferredSize(new Dimension(100, 25));
         botonRegistro.setFont(new Font("Arial", Font.PLAIN, 12));
+        JButton botonVolR = new JButton("volver");
+        botonVolR.setPreferredSize(new Dimension(100, 25));
+        botonVolR.setFont(new Font("Arial", Font.PLAIN, 12));
 
         panelRegistro.add(labelUsuarioReg);
         panelRegistro.add(campoUsuarioReg);
@@ -104,6 +128,7 @@ public class UI {
         panelRegistro.add(labelCorreoReg);
         panelRegistro.add(campoCorreoReg);
         panelRegistro.add(botonRegistro);
+        panelRegistro.add(botonVolR);
 
         // Panel de Asientos
         JPanel panelAsientos = new JPanel(new GridBagLayout());
@@ -152,12 +177,18 @@ public class UI {
         ventana.add(panelAsientos, "Panel Asientos");
         ventana.add(panelRegistro, "Panel Registro");
         ventana.add(panelResultados, "Panel Resultados");
+        ventana.add(panelPerfil,"Panel Perfil");
 
         // Mostrar el panel inicial primero
         cl.show(ventana.getContentPane(), "Panel Inicial");
 
         botonEmpezar.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Login"));
         botonReg.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Registro"));
+        botonPerf.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Perfil"));
+        botonVolR.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Inicial"));
+        botonVolBv.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Inicial"));
+        botonVolPf.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Inicial"));
+        botonVolLg.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Inicial"));
 
         botonRegistro.addActionListener(e -> {
             String nombreUsuario = campoUsuarioReg.getText();
@@ -228,7 +259,7 @@ public class UI {
                     selectedCount++;
                 }
             }
-            botonAceptar.setEnabled(selectedCount == 1);
+            botonAceptar.setEnabled(selectedCount==1);
         });
 
         botonAceptar.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Asientos"));
