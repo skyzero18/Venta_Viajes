@@ -164,6 +164,31 @@ public class Vuelo {
 
         return listaVuelos;
     }
-    
+    public void consultarAsientos(int idVuelo) {
+        String query = "SELECT numero_asiento, estado FROM asientos WHERE id_vuelo = ?";
+
+        try (Connection conn = Database.getConnection()) {
+            if (conn == null) {
+                System.err.println("No se pudo establecer la conexión.");
+                return;
+            }
+
+            try (PreparedStatement stmt = conn.prepareStatement(query)) {
+                stmt.setInt(1, idVuelo);
+
+                ResultSet rs = stmt.executeQuery();
+
+                while (rs.next()) {
+                    String numero_asiento = rs.getString("numero_asiento");
+                    String estado = rs.getString("estado");
+
+                    // Mostrar los valores por pantalla
+                    System.out.println("numero asiento: " + numero_asiento + ", Estado: " + estado);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al consultar los asientos: " + e.getMessage());
+        }
+    }
 
 }

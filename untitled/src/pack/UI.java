@@ -12,7 +12,8 @@ public class UI {
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ventana.setExtendedState(JFrame.MAXIMIZED_BOTH);
         ventana.setLayout(new CardLayout());
-
+        Vuelo ses = new Vuelo();
+        ses.consultarAsientos(1);
 
         CardLayout cl = (CardLayout) ventana.getContentPane().getLayout();
 
@@ -146,10 +147,21 @@ public class UI {
 
         //Panel asientos
         JPanel panelAsientos = new JPanel();
-        panelAsientos.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        JLabel labelselec= new JLabel("Seleccione su asiento");
+        panelAsientos.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10)); // Configurar FlowLayout con separación de 10px
 
-        panelAsientos.add(labelselec);
+        JLabel labelSelec = new JLabel("Seleccione su asiento");
+        panelAsientos.add(labelSelec);
+
+        char letra = 'A';
+        for (int i = 0; i < 25; i++) {
+            int numero = (i % 5) + 1;
+            JButton botonAsiento = new JButton(letra + "" + numero);
+            panelAsientos.add(botonAsiento);
+            botonAsiento.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Pago"));
+            if ((i + 1) % 5 == 0) {
+                letra++;
+            }
+        }
 
 
         // Panel de Pago
@@ -197,6 +209,7 @@ public class UI {
         ventana.add(panelRegistro, "Panel Registro");
         ventana.add(panelPerfil, "Panel Perfil");
         ventana.add(panelAsientos, "Panel Asientos");
+        ventana.add(panelPago,"Panel Pago");
 
         // Mostrar el panel inicial primero
         cl.show(ventana.getContentPane(), "Panel Inicial");
