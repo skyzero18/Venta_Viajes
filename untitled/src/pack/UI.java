@@ -10,8 +10,9 @@ public class UI {
     public UI() {
         JFrame ventana = new JFrame("FLY US");
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        ventana.setSize(600, 600); // Ventana más grande para acomodar todo
-        ventana.setLayout(new CardLayout()); // Configuración de CardLayout
+        ventana.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        ventana.setLayout(new CardLayout());
+
 
         CardLayout cl = (CardLayout) ventana.getContentPane().getLayout();
 
@@ -22,11 +23,13 @@ public class UI {
         JButton botonEmpezar = new JButton("Empezar");
         JButton botonReg = new JButton("Registrarse");
         JButton botonPerf = new JButton("Perfil de usuario");
+        JButton botonCs = new JButton("cerrar sesion");
 
         panelInicial.add(textoBienvenida);
         panelInicial.add(botonEmpezar);
         panelInicial.add(botonReg);
         panelInicial.add(botonPerf);
+        panelInicial.add(botonCs);
 
         // Panel de Login
         JPanel panelLogin = new JPanel();
@@ -85,7 +88,6 @@ public class UI {
 
         JPanel panelFiltros = new JPanel();
         panelFiltros.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
-
         JLabel labelOrigen = new JLabel("Origen:");
         JComboBox<String> comboOrigen = new JComboBox<>(new String[]{"Mendoza", "San Luis", "San Juan"});
         JLabel labelDestino = new JLabel("Destino:");
@@ -110,16 +112,16 @@ public class UI {
         panelFiltros.add(comboOrigen);
         panelFiltros.add(labelDestino);
         panelFiltros.add(comboDestino);
-        panelFiltros.add(labelFechas);
-        panelFiltros.add(campoFechas);
-        panelFiltros.add(labelFechav);
-        panelFiltros.add(campoFechav);
         panelFiltros.add(labelAer);
         panelFiltros.add(comboAer);
         panelFiltros.add(labelprecio);
         panelFiltros.add(comboprecio);
         panelFiltros.add(labelduracion);
         panelFiltros.add(comboduracion);
+        panelFiltros.add(labelFechas);
+        panelFiltros.add(campoFechas);
+        panelFiltros.add(labelFechav);
+        panelFiltros.add(campoFechav);
 
         panelFiltros.add(botonBuscarVuelos);
 
@@ -154,12 +156,31 @@ public class UI {
         cl.show(ventana.getContentPane(), "Panel Inicial");
 
         // Acciones de los botones
-        botonEmpezar.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Login"));
+
         botonReg.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Registro"));
         botonPerf.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Perfil"));
         botonVolR.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Inicial"));
         botonVolLg.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Inicial"));
         botonVolPf.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Inicial"));
+
+        // Consultar si hay usuarios activos
+        boolean hayUsuariosActivos = Usuario.consultarUsuariosActivos();
+
+        if (hayUsuariosActivos) {
+            botonCs.setVisible(true);
+            botonEmpezar.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Bienvenida"));
+            Vuelo vuelo = new Vuelo();
+            List<Vuelo> listaVuelos = vuelo.busquedaentera();
+            model.setRowCount(0);
+
+            for (Vuelo v : listaVuelos) {
+                model.addRow(new Object[]{false, v.getOrigen(), v.getDestino(), v.getFechaIda(), v.getFechaVuelta(),v.getAerolinea(), v.getPrecio(), v.getDuracion()});
+            }
+        } else {
+            botonCs.setVisible(false);
+            botonEmpezar.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Login"));
+        }
+
 
         botonAcceder.addActionListener(e -> {
             String email = campoEmailLogin.getText();
@@ -167,20 +188,15 @@ public class UI {
             Usuario usuario = new Usuario(); // Instanciar la clase Usuario
             if (usuario.validarCredenciales(email, contrasena)) {
                 JOptionPane.showMessageDialog(ventana, "Acceso concedido.");
-
-                // Llamada a la función busquedaentera
                 Vuelo vuelo = new Vuelo();
                 List<Vuelo> listaVuelos = vuelo.busquedaentera();
-
-                // Limpiar la tabla antes de agregar nuevos resultados
                 model.setRowCount(0);
 
-                // Recorrer la lista de vuelos obtenidos y agregarlos a la tabla
                 for (Vuelo v : listaVuelos) {
                     model.addRow(new Object[]{false, v.getOrigen(), v.getDestino(), v.getFechaIda(), v.getFechaVuelta(),v.getAerolinea(), v.getPrecio(), v.getDuracion()});
                 }
-
                 cl.show(ventana.getContentPane(), "Panel Bienvenida");
+
             } else {
                 JOptionPane.showMessageDialog(ventana, "Usuario o contraseña incorrectos.");
             }
@@ -233,6 +249,7 @@ public class UI {
         tablaVuelos.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JCheckBox()));
 
         // Acción para habilitar el botón Aceptar solo si hay una sola casilla marcada
+        // Acción para habilitar el botón Aceptar solo si hay una sola casilla marcada
         tablaVuelos.getModel().addTableModelListener(e -> {
             int selectedCount = 0;
             for (int i = 0; i < tablaVuelos.getRowCount(); i++) {
@@ -240,11 +257,37 @@ public class UI {
                     selectedCount++;
                 }
             }
-            botonAceptar.setEnabled(selectedCount == 1);
+            botonAceptar.setEnabled(selectedCount == 1); // Habilitar solo si hay un vuelo seleccionado
         });
+
+        botonAceptar.addActionListener(e -> {
+            for (int i = 0; i < tablaVuelos.getRowCount(); i++) {
+                if ((Boolean) tablaVuelos.getValueAt(i, 0)) {
+                    // Obtener datos del vuelo seleccionado
+                    String origen = (String) tablaVuelos.getValueAt(i, 1);
+                    String destino = (String) tablaVuelos.getValueAt(i, 2);
+                    // Aquí puedes trabajar con los datos seleccionados antes de cambiar de panel
+                    System.out.println("Vuelo seleccionado de " + origen + " a " + destino);
+                }
+            }
+
+            // Cambiar al panel inicial
+            cl.show(ventana.getContentPane(), "Panel Inicial");
+        });
+
+        botonCs.addActionListener(e -> {
+            Usuario.cerrarSesion();
+            botonCs.setVisible(false);
+            JOptionPane.showMessageDialog(ventana, "Sesion cerrada");
+        });
+
+
+
 
         ventana.setVisible(true);
     }
+
+
 
     public static void main(String[] args) {
         new UI();
