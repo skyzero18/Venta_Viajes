@@ -95,10 +95,16 @@ public class UI {
         campoFechas.setText("yyyy-mm-dd");
         JLabel labelFechav = new JLabel("Fecha de vuelta");
         JTextField campoFechav = new JTextField(10);
-        campoFechav.setText("yyyy-mm-dd"); // Valor inicial
-        JLabel labelPasajeros = new JLabel("Número de pasajeros:");
-        JComboBox<String> comboPasajeros = new JComboBox<>(new String[]{"1", "2", "3", "4", "5", "6"});
+        campoFechav.setText("yyyy-mm-dd"); // Valor inicia
         JButton botonBuscarVuelos = new JButton("Buscar vuelos");
+        JLabel labelAer = new JLabel("Empresa:");
+        JComboBox<String> comboAer = new JComboBox<>(new String[]{"Aerolineas Argentinas", "Flybondi", "JetSMART"});
+        JLabel labelprecio = new JLabel("Precio:");
+        JComboBox<String> comboprecio = new JComboBox<>(new String[]{"800", "800", "800"});
+        JLabel labelduracion = new JLabel("Duracion:");
+        JComboBox<String> comboduracion = new JComboBox<>(new String[]{"12", "12", "12"});
+
+
 
         panelFiltros.add(labelOrigen);
         panelFiltros.add(comboOrigen);
@@ -108,12 +114,18 @@ public class UI {
         panelFiltros.add(campoFechas);
         panelFiltros.add(labelFechav);
         panelFiltros.add(campoFechav);
-        panelFiltros.add(labelPasajeros);
+        panelFiltros.add(labelAer);
+        panelFiltros.add(comboAer);
+        panelFiltros.add(labelprecio);
+        panelFiltros.add(comboprecio);
+        panelFiltros.add(labelduracion);
+        panelFiltros.add(comboduracion);
+
         panelFiltros.add(botonBuscarVuelos);
 
         // Panel de Resultados de Búsqueda (Tabla dentro del mismo panel)
         JPanel panelResultados = new JPanel(new BorderLayout());
-        String[] columnNames = {"Seleccionar", "Origen", "Destino", "Fecha de ida", "Fecha de vuelta"};
+        String[] columnNames = {"Seleccionar", "Origen", "Destino", "Fecha de ida", "Fecha de vuelta","Aerolinea","Precio","Duracion"};
         DefaultTableModel model = new DefaultTableModel(columnNames, 0);
         JTable tablaVuelos = new JTable(model);
         tablaVuelos.setPreferredScrollableViewportSize(new Dimension(500, 200));
@@ -129,6 +141,7 @@ public class UI {
         // Añadir panelFiltros y panelResultados al panel principal
         panelBienvenida.add(panelFiltros, BorderLayout.NORTH);
         panelBienvenida.add(panelResultados, BorderLayout.CENTER);
+
 
         // Añadir los paneles a la ventana
         ventana.add(panelInicial, "Panel Inicial");
@@ -154,11 +167,25 @@ public class UI {
             Usuario usuario = new Usuario(); // Instanciar la clase Usuario
             if (usuario.validarCredenciales(email, contrasena)) {
                 JOptionPane.showMessageDialog(ventana, "Acceso concedido.");
+
+                // Llamada a la función busquedaentera
+                Vuelo vuelo = new Vuelo();
+                List<Vuelo> listaVuelos = vuelo.busquedaentera();
+
+                // Limpiar la tabla antes de agregar nuevos resultados
+                model.setRowCount(0);
+
+                // Recorrer la lista de vuelos obtenidos y agregarlos a la tabla
+                for (Vuelo v : listaVuelos) {
+                    model.addRow(new Object[]{false, v.getOrigen(), v.getDestino(), v.getFechaIda(), v.getFechaVuelta(),v.getAerolinea(), v.getPrecio(), v.getDuracion()});
+                }
+
                 cl.show(ventana.getContentPane(), "Panel Bienvenida");
             } else {
                 JOptionPane.showMessageDialog(ventana, "Usuario o contraseña incorrectos.");
             }
         });
+
 
         botonRegistro.addActionListener(e -> {
             String nombreUsuario = campoUsuarioReg.getText();
@@ -178,16 +205,19 @@ public class UI {
             String destinoSeleccionado = (String) comboDestino.getSelectedItem();
             String fechaSeleccionada = campoFechas.getText();
             String fechavSeleccionada = campoFechav.getText();
+            String aereolienaSeleccionada = (String) comboAer.getSelectedItem();
+            String precioSeleccionada = (String) comboprecio.getSelectedItem();
+            String duracionSeleccionada = (String) comboduracion.getSelectedItem();
 
             Vuelo vuelo = new Vuelo();
-            List<Vuelo> vuelos = vuelo.consultarVuelos(origenSeleccionado, destinoSeleccionado, fechaSeleccionada, fechavSeleccionada);
+            List<Vuelo> vuelos = vuelo.consultarVuelos(origenSeleccionado, destinoSeleccionado, fechaSeleccionada, fechavSeleccionada, aereolienaSeleccionada, precioSeleccionada, duracionSeleccionada);
 
             // Limpiar la tabla antes de agregar nuevos resultados
             model.setRowCount(0);
 
             // Recorrer la lista de vuelos obtenidos y agregarlos a la tabla
             for (Vuelo v : vuelos) {
-                model.addRow(new Object[]{false, v.getOrigen(), v.getDestino(), v.getFechaIda(), v.getFechaVuelta()});
+                model.addRow(new Object[]{false, v.getOrigen(), v.getDestino(), v.getFechaIda(), v.getFechaVuelta(),v.getAerolinea(),v.getPrecio(), v.getDuracion()});
             }
         });
 
