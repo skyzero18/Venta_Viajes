@@ -178,6 +178,7 @@ public class UI {
             }
         } else {
             botonCs.setVisible(false);
+            botonPerf.setVisible(false);
             botonEmpezar.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Login"));
         }
 
@@ -278,6 +279,7 @@ public class UI {
         botonCs.addActionListener(e -> {
             Usuario.cerrarSesion();
             botonCs.setVisible(false);
+            botonPerf.setVisible(false);
             JOptionPane.showMessageDialog(ventana, "Sesion cerrada");
         });
 
