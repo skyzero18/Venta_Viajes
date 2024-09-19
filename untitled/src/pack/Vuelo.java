@@ -190,5 +190,30 @@ public class Vuelo {
             System.err.println("Error al consultar los asientos: " + e.getMessage());
         }
     }
+    public int obtenerIdVuelo(String origen, String destino, String fechaIda, String fechaVuelta, String aerolinea) {
+        int idVuelo = -1; // Valor por defecto si no se encuentra ningún vuelo
+
+        String sql = "SELECT id_vuelo FROM vuelos WHERE origen = ? AND destino = ? AND fecha_ida = ? AND fecha_vuelta = ? AND aerolinea = ?";
+
+        try (Connection conn = Database.getConnection(); // Obtener conexión
+             PreparedStatement pstmt = conn.prepareStatement(sql)) { // Preparar declaración con la conexión
+            pstmt.setString(1, origen);
+            pstmt.setString(2, destino);
+            pstmt.setString(3, fechaIda);
+            pstmt.setString(4, fechaVuelta);
+            pstmt.setString(5, aerolinea);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    idVuelo = rs.getInt("id_vuelo");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Manejo de excepciones
+        }
+
+        return idVuelo;
+    }
+
 
 }

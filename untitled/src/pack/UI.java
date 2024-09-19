@@ -4,6 +4,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class UI {
@@ -165,10 +167,8 @@ public class UI {
 
 
         // Panel de Pago
-        JPanel panelPago = new JPanel(new CardLayout());
-        JPanel panelPagoTarjeta = new JPanel(new GridLayout(5, 2, 10, 10));
-        JPanel panelPagoPayPal = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
-
+        JPanel panelPago = new JPanel(new BorderLayout());
+        panelPago.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
         JLabel labelNumeroTarjeta = new JLabel("Número de tarjeta:");
         JTextField campoNumeroTarjeta = new JTextField(15);
         JLabel labelNombreTitular = new JLabel("Nombre del titular:");
@@ -179,18 +179,15 @@ public class UI {
         JTextField campoCVV = new JTextField(4);
         JButton botonConfirmarPago = new JButton("Confirmar Pago");
 
-        panelPagoTarjeta.add(labelNumeroTarjeta);
-        panelPagoTarjeta.add(campoNumeroTarjeta);
-        panelPagoTarjeta.add(labelNombreTitular);
-        panelPagoTarjeta.add(campoNombreTitular);
-        panelPagoTarjeta.add(labelFechaExpiracion);
-        panelPagoTarjeta.add(campoFechaExpiracion);
-        panelPagoTarjeta.add(labelCVV);
-        panelPagoTarjeta.add(campoCVV);
-        panelPagoTarjeta.add(botonConfirmarPago);
-
-        panelPago.add(panelPagoTarjeta, "Tarjeta");
-        panelPago.add(panelPagoPayPal, "PayPal");
+        panelPago.add(labelNumeroTarjeta);
+        panelPago.add(campoNumeroTarjeta);
+        panelPago.add(labelNombreTitular);
+        panelPago.add(campoNombreTitular);
+        panelPago.add(labelFechaExpiracion);
+        panelPago.add(campoFechaExpiracion);
+        panelPago.add(labelCVV);
+        panelPago.add(campoCVV);
+        panelPago.add(botonConfirmarPago);
 
         // Panel de Confirmación de Compra
         JPanel panelConfirmacion = new JPanel();
@@ -344,14 +341,37 @@ public class UI {
             JOptionPane.showMessageDialog(ventana, "Sesion cerrada");
         });
 
+        tablaVuelos.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int row = tablaVuelos.rowAtPoint(e.getPoint());
+
+                // Obtener los datos de las columnas del elemento seleccionado
+                String origen = tablaVuelos.getValueAt(row, 1).toString();
+                String destino = tablaVuelos.getValueAt(row, 2).toString();
+                String fechaIda = tablaVuelos.getValueAt(row, 3).toString();
+                String fechaVuelta = tablaVuelos.getValueAt(row, 4).toString();
+                String aerolinea = tablaVuelos.getValueAt(row, 5).toString();
+
+
+                // Crear una instancia de Vuelo para llamar al método obtenerIdVuelo
+                Vuelo vuelo = new Vuelo();
+
+                // Obtener el ID del vuelo
+                int idVuelo = vuelo.obtenerIdVuelo(origen, destino, fechaIda, fechaVuelta, aerolinea);
+
+                // Mostrar el ID del vuelo
+                JOptionPane.showMessageDialog(ventana, "ID del vuelo: " + idVuelo);
+            }
+        });
+
+
+
 
 
 
         ventana.setVisible(true);
     }
-
-
-
     public static void main(String[] args) {
         new UI();
     }
