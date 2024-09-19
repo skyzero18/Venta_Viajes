@@ -144,6 +144,51 @@ public class UI {
         panelBienvenida.add(panelFiltros, BorderLayout.NORTH);
         panelBienvenida.add(panelResultados, BorderLayout.CENTER);
 
+        //Panel asientos
+        JPanel panelAsientos = new JPanel();
+        panelAsientos.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        JLabel labelselec= new JLabel("Seleccione su asiento");
+
+        panelAsientos.add(labelselec);
+
+
+        // Panel de Pago
+        JPanel panelPago = new JPanel(new CardLayout());
+        JPanel panelPagoTarjeta = new JPanel(new GridLayout(5, 2, 10, 10));
+        JPanel panelPagoPayPal = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+
+        JLabel labelNumeroTarjeta = new JLabel("Número de tarjeta:");
+        JTextField campoNumeroTarjeta = new JTextField(15);
+        JLabel labelNombreTitular = new JLabel("Nombre del titular:");
+        JTextField campoNombreTitular = new JTextField(15);
+        JLabel labelFechaExpiracion = new JLabel("Fecha de expiración (MM/YY):");
+        JTextField campoFechaExpiracion = new JTextField(10);
+        JLabel labelCVV = new JLabel("CVV:");
+        JTextField campoCVV = new JTextField(4);
+        JButton botonConfirmarPago = new JButton("Confirmar Pago");
+
+        panelPagoTarjeta.add(labelNumeroTarjeta);
+        panelPagoTarjeta.add(campoNumeroTarjeta);
+        panelPagoTarjeta.add(labelNombreTitular);
+        panelPagoTarjeta.add(campoNombreTitular);
+        panelPagoTarjeta.add(labelFechaExpiracion);
+        panelPagoTarjeta.add(campoFechaExpiracion);
+        panelPagoTarjeta.add(labelCVV);
+        panelPagoTarjeta.add(campoCVV);
+        panelPagoTarjeta.add(botonConfirmarPago);
+
+        panelPago.add(panelPagoTarjeta, "Tarjeta");
+        panelPago.add(panelPagoPayPal, "PayPal");
+
+        // Panel de Confirmación de Compra
+        JPanel panelConfirmacion = new JPanel();
+        JLabel textoConfirmacion = new JLabel("¡Compra realizada con éxito! Revisa tu correo electrónico para ver el recibo.");
+        textoConfirmacion.setFont(new Font("Arial", Font.BOLD, 16));
+        panelConfirmacion.add(textoConfirmacion);
+        JButton botonVolverConfirmacion = new JButton("Volver");
+
+        panelConfirmacion.add(botonVolverConfirmacion);
+
 
         // Añadir los paneles a la ventana
         ventana.add(panelInicial, "Panel Inicial");
@@ -151,6 +196,7 @@ public class UI {
         ventana.add(panelBienvenida, "Panel Bienvenida");
         ventana.add(panelRegistro, "Panel Registro");
         ventana.add(panelPerfil, "Panel Perfil");
+        ventana.add(panelAsientos, "Panel Asientos");
 
         // Mostrar el panel inicial primero
         cl.show(ventana.getContentPane(), "Panel Inicial");
@@ -249,8 +295,7 @@ public class UI {
 
         tablaVuelos.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JCheckBox()));
 
-        // Acción para habilitar el botón Aceptar solo si hay una sola casilla marcada
-        // Acción para habilitar el botón Aceptar solo si hay una sola casilla marcada
+
         tablaVuelos.getModel().addTableModelListener(e -> {
             int selectedCount = 0;
             for (int i = 0; i < tablaVuelos.getRowCount(); i++) {
@@ -258,8 +303,11 @@ public class UI {
                     selectedCount++;
                 }
             }
-            botonAceptar.setEnabled(selectedCount == 1); // Habilitar solo si hay un vuelo seleccionado
+            botonAceptar.setEnabled(selectedCount == 1);
+
         });
+
+        botonAceptar.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Asientos"));
 
         botonAceptar.addActionListener(e -> {
             for (int i = 0; i < tablaVuelos.getRowCount(); i++) {
