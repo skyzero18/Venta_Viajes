@@ -215,5 +215,27 @@ public class Vuelo {
         return idVuelo;
     }
 
+    public int obtenerIdAsiento(String asientoSeleccionado) {
+        int idAsiento = -1; // Valor por defecto si no se encuentra el asiento
+
+        String sql = "SELECT id_asiento FROM asientos WHERE numero_asiento = ?";
+
+        try (Connection conn = Database.getConnection(); // Obtener conexión
+             PreparedStatement pstmt = conn.prepareStatement(sql)) { // Preparar declaración con la conexión
+            pstmt.setString(1, asientoSeleccionado); // Usar asientoSeleccionado como parámetro
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    idAsiento = rs.getInt("id_asiento"); // Obtener el id_asiento
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Manejo de excepciones
+        }
+
+        return idAsiento; // Devolver el id del asiento
+    }
+
+
 
 }

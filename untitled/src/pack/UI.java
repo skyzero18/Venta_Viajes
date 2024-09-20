@@ -9,13 +9,15 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 
 public class UI {
+    private int idVuelo=-1;
+    private int idAsiento=-1;
+
     public UI() {
         JFrame ventana = new JFrame("FLY US");
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ventana.setExtendedState(JFrame.MAXIMIZED_BOTH);
         ventana.setLayout(new CardLayout());
-        Vuelo ses = new Vuelo();
-        ses.consultarAsientos(1);
+
 
         CardLayout cl = (CardLayout) ventana.getContentPane().getLayout();
 
@@ -76,13 +78,22 @@ public class UI {
         panelRegistro.add(botonRegistro);
         panelRegistro.add(botonVolR);
 
-        // Panel de Perfil
-        JPanel panelPerfil = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        //Panel perfil
+        JPanel panelPerfil = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 50));
         JLabel textoPerfil = new JLabel("Perfil", SwingConstants.CENTER);
-        textoPerfil.setFont(new Font("Arial", Font.BOLD, 16));
+        JLabel labelNombre = new JLabel("Nombre:");
+        JLabel labelCorreo = new JLabel("Correo Electrónico:");
+        JLabel labelTelefono = new JLabel("Número de Teléfono:");
         JButton botonVolPf = new JButton("Volver");
+        botonVolPf.setPreferredSize(new Dimension(80, 25));
+        botonVolPf.setFont(new Font("Arial", Font.PLAIN, 12));
 
         panelPerfil.add(textoPerfil);
+        panelPerfil.add(textoPerfil);
+        panelPerfil.add(labelNombre);
+        panelPerfil.add(labelCorreo);
+        panelPerfil.add(labelTelefono);
+        panelPerfil.add(botonVolPf);
         panelPerfil.add(botonVolPf);
 
         // Panel de Bienvenida con el formulario y la tabla
@@ -154,16 +165,7 @@ public class UI {
         JLabel labelSelec = new JLabel("Seleccione su asiento");
         panelAsientos.add(labelSelec);
 
-        char letra = 'A';
-        for (int i = 0; i < 25; i++) {
-            int numero = (i % 5) + 1;
-            JButton botonAsiento = new JButton(letra + "" + numero);
-            panelAsientos.add(botonAsiento);
-            botonAsiento.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Pago"));
-            if ((i + 1) % 5 == 0) {
-                letra++;
-            }
-        }
+
 
 
         // Panel de Pago
@@ -220,9 +222,12 @@ public class UI {
         botonVolPf.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Inicial"));
 
         // Consultar si hay usuarios activos
-        boolean hayUsuariosActivos = Usuario.consultarUsuariosActivos();
-
-        if (hayUsuariosActivos) {
+        Integer hayUsuariosActivos = Usuario.consultarUsuariosActivos();
+        if (hayUsuariosActivos == null) {
+            botonCs.setVisible(false);
+            botonPerf.setVisible(false);
+            botonEmpezar.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Login"));
+        } else {
             botonCs.setVisible(true);
             botonEmpezar.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Bienvenida"));
             Vuelo vuelo = new Vuelo();
@@ -232,10 +237,6 @@ public class UI {
             for (Vuelo v : listaVuelos) {
                 model.addRow(new Object[]{false, v.getOrigen(), v.getDestino(), v.getFechaIda(), v.getFechaVuelta(),v.getAerolinea(), v.getPrecio(), v.getDuracion()});
             }
-        } else {
-            botonCs.setVisible(false);
-            botonPerf.setVisible(false);
-            botonEmpezar.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Login"));
         }
 
 
@@ -341,34 +342,55 @@ public class UI {
             JOptionPane.showMessageDialog(ventana, "Sesion cerrada");
         });
 
+
         tablaVuelos.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int row = tablaVuelos.rowAtPoint(e.getPoint());
-
-                // Obtener los datos de las columnas del elemento seleccionado
                 String origen = tablaVuelos.getValueAt(row, 1).toString();
                 String destino = tablaVuelos.getValueAt(row, 2).toString();
                 String fechaIda = tablaVuelos.getValueAt(row, 3).toString();
                 String fechaVuelta = tablaVuelos.getValueAt(row, 4).toString();
                 String aerolinea = tablaVuelos.getValueAt(row, 5).toString();
 
-
-                // Crear una instancia de Vuelo para llamar al método obtenerIdVuelo
                 Vuelo vuelo = new Vuelo();
+                idVuelo = vuelo.obtenerIdVuelo(origen, destino, fechaIda, fechaVuelta, aerolinea);
 
-                // Obtener el ID del vuelo
-                int idVuelo = vuelo.obtenerIdVuelo(origen, destino, fechaIda, fechaVuelta, aerolinea);
-
-                // Mostrar el ID del vuelo
                 JOptionPane.showMessageDialog(ventana, "ID del vuelo: " + idVuelo);
             }
         });
 
 
+        char letra = 'A';
+        for (int i = 0; i < 25; i++) {
+            int numero = (i % 5) + 1;
+            JButton botonAsiento = new JButton(letra + "" + numero); // Ejemplo: A1, A2, A3, etc.
+            panelAsientos.add(botonAsiento);
+            botonAsiento.addActionListener(e -> {
+                String asientoSeleccionado = botonAsiento.getText();
+                Vuelo vuelo = new Vuelo();
+                idAsiento = vuelo.obtenerIdAsiento(asientoSeleccionado);
+                if (idAsiento != -1) {
+                    System.out.println("Asiento seleccionado: " + asientoSeleccionado + " con ID: " + idAsiento);
+                    System.out.println("Vuelo " + idVuelo);
+                    System.out.println("id usuario "+ hayUsuariosActivos);
+                    cl.show(ventana.getContentPane(), "Panel Pago");
+                } else {
+                    System.out.println("Asiento no encontrado para: " + asientoSeleccionado);
+                }
+            });
+            if ((i + 1) % 5 == 0) {
+                letra++;
+            }
+        }
 
+        botonConfirmarPago.addActionListener(e -> {
+            String titular = campoNombreTitular.getText();
+            JOptionPane.showMessageDialog(ventana, "Vuelo adquirido, Hemos enviado un comprobante de pago a su correo");
+            Usuario usuario = new Usuario();
+            usuario.pagofin(idAsiento, hayUsuariosActivos,titular);
 
-
+        });
 
         ventana.setVisible(true);
     }
