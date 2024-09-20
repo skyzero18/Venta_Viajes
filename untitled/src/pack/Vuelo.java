@@ -164,32 +164,38 @@ public class Vuelo {
 
         return listaVuelos;
     }
-    public void consultarAsientos(int idVuelo) {
-        String query = "SELECT numero_asiento, estado FROM asientos WHERE id_vuelo = ?";
+    public boolean consultarAsientoOcupado(int idVuelo, int idAsiento) {
+        String query = "SELECT estado FROM asientos WHERE id_vuelo = ? AND id_asiento = ?";
 
         try (Connection conn = Database.getConnection()) {
             if (conn == null) {
                 System.err.println("No se pudo establecer la conexión.");
-                return;
+                return false;
             }
 
             try (PreparedStatement stmt = conn.prepareStatement(query)) {
                 stmt.setInt(1, idVuelo);
+                stmt.setInt(2, idAsiento);
 
                 ResultSet rs = stmt.executeQuery();
 
-                while (rs.next()) {
-                    String numero_asiento = rs.getString("numero_asiento");
+                if (rs.next()) {
                     String estado = rs.getString("estado");
 
-                    // Mostrar los valores por pantalla
-                    System.out.println("numero asiento: " + numero_asiento + ", Estado: " + estado);
+                    // Verificar si el asiento está ocupado
+                    if ("Ocupado".equalsIgnoreCase(estado)) {
+                        return true; // Asiento está ocupado
+                    }
                 }
             }
         } catch (SQLException e) {
-            System.err.println("Error al consultar los asientos: " + e.getMessage());
+            System.err.println("Error al consultar el asiento: " + e.getMessage());
         }
+
+        return false; // Asiento no está ocupado o no existe
     }
+
+
     public int obtenerIdVuelo(String origen, String destino, String fechaIda, String fechaVuelta, String aerolinea) {
         int idVuelo = -1; // Valor por defecto si no se encuentra ningún vuelo
 

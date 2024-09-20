@@ -79,20 +79,38 @@ public class UI {
         panelRegistro.add(botonVolR);
 
         //Panel perfil
+
+
         JPanel panelPerfil = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 50));
         JLabel textoPerfil = new JLabel("Perfil", SwingConstants.CENTER);
+        JLabel labelNombreUs = new JLabel("Nombre de usuario:");
+        JLabel labelNombreUsvc = new JLabel("");
         JLabel labelNombre = new JLabel("Nombre:");
+        JLabel labelNombrevc = new JLabel("");
         JLabel labelCorreo = new JLabel("Correo Electrónico:");
+        JLabel labelCorreovc = new JLabel("");
         JLabel labelTelefono = new JLabel("Número de Teléfono:");
+        JLabel labelTelefonovc = new JLabel("");
+        JLabel labelReservastx = new JLabel("Reservas");
         JButton botonVolPf = new JButton("Volver");
         botonVolPf.setPreferredSize(new Dimension(80, 25));
         botonVolPf.setFont(new Font("Arial", Font.PLAIN, 12));
+        // Panel perfil
+
+
+
 
         panelPerfil.add(textoPerfil);
-        panelPerfil.add(textoPerfil);
+        panelPerfil.add(labelNombreUs);
+        panelPerfil.add(labelNombreUsvc);
+        panelPerfil.add(labelCorreovc);
         panelPerfil.add(labelNombre);
+        panelPerfil.add(labelNombrevc);
         panelPerfil.add(labelCorreo);
+        panelPerfil.add(labelCorreovc);
         panelPerfil.add(labelTelefono);
+        panelPerfil.add(labelTelefonovc);
+        panelPerfil.add(labelReservastx);
         panelPerfil.add(botonVolPf);
         panelPerfil.add(botonVolPf);
 
@@ -180,6 +198,7 @@ public class UI {
         JLabel labelCVV = new JLabel("CVV:");
         JTextField campoCVV = new JTextField(4);
         JButton botonConfirmarPago = new JButton("Confirmar Pago");
+        JButton botonVolPg = new JButton("Volver");
 
         panelPago.add(labelNumeroTarjeta);
         panelPago.add(campoNumeroTarjeta);
@@ -190,6 +209,7 @@ public class UI {
         panelPago.add(labelCVV);
         panelPago.add(campoCVV);
         panelPago.add(botonConfirmarPago);
+        panelPago.add(botonVolPg);
 
         // Panel de Confirmación de Compra
         JPanel panelConfirmacion = new JPanel();
@@ -214,12 +234,14 @@ public class UI {
         cl.show(ventana.getContentPane(), "Panel Inicial");
 
         // Acciones de los botones
-
         botonReg.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Registro"));
-        botonPerf.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Perfil"));
         botonVolR.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Inicial"));
         botonVolLg.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Inicial"));
         botonVolPf.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Inicial"));
+        botonVolPg.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Asientos"));
+
+
+
 
         // Consultar si hay usuarios activos
         Integer hayUsuariosActivos = Usuario.consultarUsuariosActivos();
@@ -384,16 +406,50 @@ public class UI {
             }
         }
 
+
         botonConfirmarPago.addActionListener(e -> {
             String titular = campoNombreTitular.getText();
-            JOptionPane.showMessageDialog(ventana, "Vuelo adquirido, Hemos enviado un comprobante de pago a su correo");
             Usuario usuario = new Usuario();
-            usuario.pagofin(idAsiento, hayUsuariosActivos,titular);
+            Vuelo vuelo = new Vuelo();
+            boolean confasien = vuelo.consultarAsientoOcupado(idVuelo, idAsiento );
+            if (confasien) {
+              JOptionPane.showMessageDialog(ventana,"Error: El asiento elegido esta ocupado");
+            }
+            else {
+                JOptionPane.showMessageDialog(ventana, "Vuelo adquirido, Hemos enviado un comprobante de pago a su correo");
+                usuario.pagofin(idAsiento, hayUsuariosActivos,titular);
+            }
+
 
         });
 
+        botonPerf.addActionListener(e -> {
+            cl.show(ventana.getContentPane(), "Panel Perfil");
+
+            int idUsuarioActivo = hayUsuariosActivos;
+
+            Pasajero pasajero = new Pasajero();
+            pasajero.actualizarDatos(idUsuarioActivo);
+
+            // Obtener los datos actualizados del pasajero
+            String nombreusvc = pasajero.getNombre();
+            String nombrevc = pasajero.getNombrefin();
+            String correovc = pasajero.getCorreo();
+            String telefonovc = pasajero.getTelefono();
+
+            labelNombreUsvc.setText(nombreusvc);
+            labelNombrevc.setText(nombrevc);
+            labelCorreovc.setText(correovc);
+            labelTelefonovc.setText(telefonovc);
+        });
+
+
+
+
+
         ventana.setVisible(true);
     }
+
     public static void main(String[] args) {
         new UI();
     }
