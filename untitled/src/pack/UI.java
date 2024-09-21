@@ -92,10 +92,12 @@ public class UI {
         JLabel labelTelefono = new JLabel("Número de Teléfono:");
         JLabel labelTelefonovc = new JLabel("");
         JLabel labelReservastx = new JLabel("Reservas");
+        JButton botonCanre = new JButton("cancelar reservas");
+        botonCanre.setPreferredSize(new Dimension(175, 25));
+        botonCanre.setFont(new Font("Arial", Font.PLAIN, 12));
         JButton botonVolPf = new JButton("Volver");
         botonVolPf.setPreferredSize(new Dimension(80, 25));
         botonVolPf.setFont(new Font("Arial", Font.PLAIN, 12));
-        // Panel perfil
 
 
 
@@ -111,7 +113,7 @@ public class UI {
         panelPerfil.add(labelTelefono);
         panelPerfil.add(labelTelefonovc);
         panelPerfil.add(labelReservastx);
-        panelPerfil.add(botonVolPf);
+        panelPerfil.add(botonCanre);
         panelPerfil.add(botonVolPf);
 
         // Panel de Bienvenida con el formulario y la tabla
@@ -443,6 +445,12 @@ public class UI {
             labelTelefonovc.setText(telefonovc);
         });
 
+        botonCanre.addActionListener(e -> {
+            JOptionPane.showMessageDialog(ventana, "Cancelando todas sus reservas");
+            Pasajero pasajero = new Pasajero();
+            pasajero.obtenerDatos(hayUsuariosActivos);
+
+        });
 
 
 

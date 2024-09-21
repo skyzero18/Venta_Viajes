@@ -115,7 +115,7 @@ public class Usuario {
         System.out.println("ID de asiento: " + idAsiento);
         System.out.println("Titular: " + titular);
 
-        String insertSql = "INSERT INTO reservas (id_usuario, id_asiento, fecha_reserva) VALUES (?, ?, ?)";
+        String insertSql = "INSERT INTO reservas (id_usuario, id_asiento, fecha_reserva,estado) VALUES (?, ?, ?, 'pagada')";
         String updateSql = "UPDATE asientos SET estado = 'ocupado' WHERE id_asiento = ? AND estado = 'libre'";
         String updateUserSql = "UPDATE users SET nombre_titular = ? WHERE user_id = ?";
 
