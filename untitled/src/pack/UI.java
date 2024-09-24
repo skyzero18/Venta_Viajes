@@ -1,5 +1,5 @@
 package pack;
-
+import net.miginfocom.swing.MigLayout;
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
@@ -27,19 +27,20 @@ public class UI {
         CardLayout cl = (CardLayout) ventana.getContentPane().getLayout();
 
         // Panel Inicial
-        JPanel panelInicial = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        JPanel panelInicial = new JPanel(new MigLayout("wrap 1", "[center]", "[]10[]"));
         JLabel textoBienvenida = new JLabel("¡Bienvenido a FlyUS!", SwingConstants.CENTER);
         textoBienvenida.setFont(new Font("Arial", Font.BOLD, 16));
         JButton botonEmpezar = new JButton("Empezar");
         JButton botonReg = new JButton("Registrarse");
         JButton botonPerf = new JButton("Perfil de usuario");
-        JButton botonCs = new JButton("cerrar sesion");
+        JButton botonCs = new JButton("Cerrar Sesión");
 
-        panelInicial.add(textoBienvenida);
-        panelInicial.add(botonEmpezar);
-        panelInicial.add(botonReg);
-        panelInicial.add(botonPerf);
-        panelInicial.add(botonCs);
+        panelInicial.add(textoBienvenida, "span, grow, align center");
+        panelInicial.add(botonEmpezar, "grow");
+        panelInicial.add(botonReg, "grow");
+        panelInicial.add(botonPerf, "grow");
+        panelInicial.add(botonCs, "grow");
+
 
         // Panel de Login
         JPanel panelLogin = new JPanel();
@@ -83,11 +84,10 @@ public class UI {
         panelRegistro.add(botonRegistro);
         panelRegistro.add(botonVolR);
 
-        //Panel perfil
-
-
-        JPanel panelPerfil = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 50));
+        // Panel perfil con MigLayout
+        JPanel panelPerfil = new JPanel(new MigLayout("wrap 1", "[center]", "[]10[]")); // Usando MigLayout
         JLabel textoPerfil = new JLabel("Perfil", SwingConstants.CENTER);
+        textoPerfil.setFont(new Font("Arial", Font.BOLD, 16)); // Estableciendo el estilo del texto
         JLabel labelNombreUs = new JLabel("Nombre de usuario:");
         JLabel labelNombreUsvc = new JLabel("");
         JLabel labelNombre = new JLabel("Nombre:");
@@ -96,8 +96,7 @@ public class UI {
         JLabel labelCorreovc = new JLabel("");
         JLabel labelTelefono = new JLabel("Número de Teléfono:");
         JLabel labelTelefonovc = new JLabel("");
-        JLabel labelReservastx = new JLabel("Reservas");
-        JButton botonCanre = new JButton("cancelar reservas");
+        JButton botonCanre = new JButton("Cancelar reservas");
         botonCanre.setPreferredSize(new Dimension(175, 25));
         botonCanre.setFont(new Font("Arial", Font.PLAIN, 12));
         JButton botonVolPf = new JButton("Volver");
@@ -105,21 +104,18 @@ public class UI {
         botonVolPf.setFont(new Font("Arial", Font.PLAIN, 12));
 
 
+        panelPerfil.add(textoPerfil, "span, grow, align center");
+        panelPerfil.add(labelNombreUs, "split 2");
+        panelPerfil.add(labelNombreUsvc, "grow");
+        panelPerfil.add(labelNombre, "split 2");
+        panelPerfil.add(labelNombrevc, "grow");
+        panelPerfil.add(labelCorreo, "split 2");
+        panelPerfil.add(labelCorreovc, "grow");
+        panelPerfil.add(labelTelefono, "split 2");
+        panelPerfil.add(labelTelefonovc, "grow");
+        panelPerfil.add(botonCanre, "grow");
+        panelPerfil.add(botonVolPf, "grow");
 
-
-        panelPerfil.add(textoPerfil);
-        panelPerfil.add(labelNombreUs);
-        panelPerfil.add(labelNombreUsvc);
-        panelPerfil.add(labelCorreovc);
-        panelPerfil.add(labelNombre);
-        panelPerfil.add(labelNombrevc);
-        panelPerfil.add(labelCorreo);
-        panelPerfil.add(labelCorreovc);
-        panelPerfil.add(labelTelefono);
-        panelPerfil.add(labelTelefonovc);
-        panelPerfil.add(labelReservastx);
-        panelPerfil.add(botonCanre);
-        panelPerfil.add(botonVolPf);
 
         // Panel de Bienvenida con el formulario y la tabla
         JPanel panelBienvenida = new JPanel();
@@ -140,9 +136,9 @@ public class UI {
         JButton botonBuscarVuelos = new JButton("Buscar vuelos");
         JLabel labelAer = new JLabel("Empresa:");
         JComboBox<String> comboAer = new JComboBox<>(new String[]{"Aerolineas Argentinas", "Flybondi", "JetSMART"});
-        JLabel labelprecio = new JLabel("Precio:");
+        JLabel labelprecio = new JLabel("Precio (dolares):");
         JComboBox<String> comboprecio = new JComboBox<>(new String[]{"800", "800", "800"});
-        JLabel labelduracion = new JLabel("Duracion:");
+        JLabel labelduracion = new JLabel("Duracion (horas):");
         JComboBox<String> comboduracion = new JComboBox<>(new String[]{"12", "12", "12"});
 
 
@@ -193,9 +189,8 @@ public class UI {
 
 
 
-        // Panel de Pago
-        JPanel panelPago = new JPanel(new BorderLayout());
-        panelPago.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        // Panel de Pago utilizando MigLayout
+        JPanel panelPago = new JPanel(new MigLayout("wrap 1", "[left][grow]")); // Dos columnas, la primera alineada a la derecha
         JLabel labelNumeroTarjeta = new JLabel("Número de tarjeta:");
         JTextField campoNumeroTarjeta = new JTextField(15);
         JLabel labelNombreTitular = new JLabel("Nombre del titular:");
@@ -207,16 +202,18 @@ public class UI {
         JButton botonConfirmarPago = new JButton("Confirmar Pago");
         JButton botonVolPg = new JButton("Volver");
 
-        panelPago.add(labelNumeroTarjeta);
-        panelPago.add(campoNumeroTarjeta);
-        panelPago.add(labelNombreTitular);
-        panelPago.add(campoNombreTitular);
-        panelPago.add(labelFechaExpiracion);
-        panelPago.add(campoFechaExpiracion);
-        panelPago.add(labelCVV);
-        panelPago.add(campoCVV);
-        panelPago.add(botonConfirmarPago);
-        panelPago.add(botonVolPg);
+// Agregando componentes al panel
+        panelPago.add(labelNumeroTarjeta); // Etiqueta del número de tarjeta
+        panelPago.add(campoNumeroTarjeta); // Campo del número de tarjeta
+        panelPago.add(labelNombreTitular); // Etiqueta del nombre del titular
+        panelPago.add(campoNombreTitular); // Campo del nombre del titular
+        panelPago.add(labelFechaExpiracion); // Etiqueta de fecha de expiración
+        panelPago.add(campoFechaExpiracion); // Campo de fecha de expiración
+        panelPago.add(labelCVV); // Etiqueta del CVV
+        panelPago.add(campoCVV); // Campo del CVV
+        panelPago.add(botonConfirmarPago, "grow"); // Botón de confirmar pago, ocupa toda la fila
+        panelPago.add(botonVolPg, "grow"); // Botón de volver, ocupa toda la fila
+
 
         // Panel de Confirmación de Compra
         JPanel panelConfirmacion = new JPanel();
@@ -335,17 +332,23 @@ public class UI {
 
         tablaVuelos.getColumnModel().getColumn(0).setCellEditor(new DefaultCellEditor(new JCheckBox()));
 
-
         tablaVuelos.getModel().addTableModelListener(e -> {
-            int selectedCount = 0;
-            for (int i = 0; i < tablaVuelos.getRowCount(); i++) {
-                if ((Boolean) tablaVuelos.getValueAt(i, 0)) {
-                    selectedCount++;
+            // Verifica si el evento es de la columna que contiene los JCheckBox
+            if (e.getColumn() == 0) {
+                int selectedCount = 0;
+                for (int i = 0; i < tablaVuelos.getRowCount(); i++) {
+                    // Asegúrate de que la fila es válida antes de acceder
+                    if (i >= 0 && i < tablaVuelos.getRowCount()) {
+                        Boolean isSelected = (Boolean) tablaVuelos.getValueAt(i, 0);
+                        if (isSelected != null && isSelected) {
+                            selectedCount++;
+                        }
+                    }
                 }
+                botonAceptar.setEnabled(selectedCount == 1);
             }
-            botonAceptar.setEnabled(selectedCount == 1);
-
         });
+
 
         botonAceptar.addActionListener(e -> cl.show(ventana.getContentPane(), "Panel Asientos"));
 
