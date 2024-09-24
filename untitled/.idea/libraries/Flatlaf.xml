@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Flatlaf">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../../javalibraries/Flatlaf" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/../../javalibraries/Flatlaf" recursive="false" />
+  </library>
+</component>

@@ -1,5 +1,9 @@
 package pack;
 
+import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.FlatLightLaf;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -13,6 +17,7 @@ public class UI {
     private int idAsiento=-1;
 
     public UI() {
+        FlatDarkLaf.setup();
         JFrame ventana = new JFrame("FLY US");
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ventana.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -380,7 +385,7 @@ public class UI {
                 Vuelo vuelo = new Vuelo();
                 idVuelo = vuelo.obtenerIdVuelo(origen, destino, fechaIda, fechaVuelta, aerolinea);
 
-                JOptionPane.showMessageDialog(ventana, "ID del vuelo: " + idVuelo);
+                System.out.println("ID del vuelo: " + idVuelo);
             }
         });
 
@@ -456,9 +461,5 @@ public class UI {
 
 
         ventana.setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        new UI();
     }
 }
