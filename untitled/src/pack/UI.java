@@ -1,9 +1,6 @@
 package pack;
 import net.miginfocom.swing.MigLayout;
 import com.formdev.flatlaf.FlatDarkLaf;
-import com.formdev.flatlaf.FlatLaf;
-import com.formdev.flatlaf.FlatLightLaf;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -27,13 +24,16 @@ public class UI {
         CardLayout cl = (CardLayout) ventana.getContentPane().getLayout();
 
         // Panel Inicial
+        Font fuenteGrande = new Font("Arial", Font.PLAIN, 30);
+        int widthvr= 75;
+        int heightvr= 20;
+
         JPanel panelInicial = new JPanel(new MigLayout("wrap 1", "[center]", "[]10[]"));
-        JLabel textoBienvenida = new JLabel("¡Bienvenido a FlyUS!", SwingConstants.CENTER);
-        textoBienvenida.setFont(new Font("Arial", Font.BOLD, 16));
-        JButton botonEmpezar = new JButton("Empezar");
-        JButton botonReg = new JButton("Registrarse");
-        JButton botonPerf = new JButton("Perfil de usuario");
-        JButton botonCs = new JButton("Cerrar Sesión");
+        JLabel textoBienvenida = new JLabel("¡Bienvenido a FlyUS!", SwingConstants.CENTER) {{setFont(fuenteGrande);}};
+        JButton botonEmpezar = new JButton("Empezar"){{setFont(fuenteGrande);setPreferredSize(new Dimension(widthvr, heightvr));}};
+        JButton botonReg = new JButton("Registrarse"){{setFont(fuenteGrande);setPreferredSize(new Dimension(widthvr, heightvr));}};
+        JButton botonPerf = new JButton("Perfil de usuario"){{setFont(fuenteGrande);setPreferredSize(new Dimension(widthvr, heightvr));}};
+        JButton botonCs = new JButton("Cerrar Sesión"){{setFont(fuenteGrande);setPreferredSize(new Dimension(widthvr, heightvr));}};
 
         panelInicial.add(textoBienvenida, "span, grow, align center");
         panelInicial.add(botonEmpezar, "grow");
@@ -43,65 +43,60 @@ public class UI {
 
 
         // Panel de Login
-        JPanel panelLogin = new JPanel();
-        panelLogin.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-        JLabel labelEmailLogin = new JLabel("Email:");
-        JTextField campoEmailLogin = new JTextField(10);
-        JLabel labelContrasenaLogin = new JLabel("Contraseña:");
-        JPasswordField campoContrasenaLogin = new JPasswordField(10);
-        JButton botonAcceder = new JButton("Acceder");
-        JButton botonVolLg = new JButton("Volver");
+        JPanel panelLogin = new JPanel(new MigLayout("wrap 1", "[center]", "[]10[]"));
+        JLabel labelEmailLogin = new JLabel("Email:") {{setFont(fuenteGrande);}};
+        JTextField campoEmailLogin = new JTextField(10) {{setFont(fuenteGrande);setPreferredSize(new Dimension(widthvr, heightvr));}};
+        JLabel labelContrasenaLogin = new JLabel("Contraseña:") {{setFont(fuenteGrande);}};
+        JPasswordField campoContrasenaLogin = new JPasswordField(10) {{setFont(fuenteGrande);setPreferredSize(new Dimension(widthvr, heightvr));}};
+        JButton botonAcceder = new JButton("Acceder") {{setFont(fuenteGrande);setPreferredSize(new Dimension(widthvr, heightvr));}};
+        JButton botonVolLg = new JButton("Volver") {{setFont(fuenteGrande);setPreferredSize(new Dimension(widthvr, heightvr));}};
 
-        panelLogin.add(labelEmailLogin);
-        panelLogin.add(campoEmailLogin);
-        panelLogin.add(labelContrasenaLogin);
-        panelLogin.add(campoContrasenaLogin);
-        panelLogin.add(botonAcceder);
-        panelLogin.add(botonVolLg);
+        // Añadir los componentes al panel
+        panelLogin.add(labelEmailLogin, "span, grow, align center");
+        panelLogin.add(campoEmailLogin, "grow");
+        panelLogin.add(labelContrasenaLogin, "grow");
+        panelLogin.add(campoContrasenaLogin, "grow");
+        panelLogin.add(botonAcceder, "grow");
+        panelLogin.add(botonVolLg, "grow");
 
         // Panel de Registro
-        JPanel panelRegistro = new JPanel();
-        panelRegistro.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        JLabel labelUsuarioReg = new JLabel("Nombre de Usuario:");
-        JTextField campoUsuarioReg = new JTextField(15);
-        JLabel labelContrasenaReg = new JLabel("Contraseña:");
-        JTextField campoTelReg = new JTextField(15);
-        JLabel labelTelReg = new JLabel("Telefono:");
-        JTextField campoCorreoReg = new JTextField(15);
-        JLabel labelCorreoReg = new JLabel("Correo:");
-        JPasswordField campoContrasenaReg = new JPasswordField(15);
-        JButton botonRegistro = new JButton("Registrar");
-        JButton botonVolR = new JButton("volver");
+        JPanel panelRegistro = new JPanel(new MigLayout("wrap 1", "[center]", "[]10[]"));
+        JLabel labelUsuarioReg = new JLabel("Nombre de Usuario:") {{setFont(fuenteGrande);}};
+        JTextField campoUsuarioReg = new JTextField(15) {{setFont(fuenteGrande);setPreferredSize(new Dimension(widthvr, heightvr));}};
+        JLabel labelContrasenaReg = new JLabel("Contraseña:") {{setFont(fuenteGrande);}};
+        JPasswordField campoContrasenaReg = new JPasswordField(15) {{setFont(fuenteGrande);setPreferredSize(new Dimension(widthvr, heightvr));}};
+        JLabel labelTelReg = new JLabel("Teléfono:") {{setFont(fuenteGrande);}};
+        JTextField campoTelReg = new JTextField(15) {{setFont(fuenteGrande);setPreferredSize(new Dimension(widthvr, heightvr));}};
+        JLabel labelCorreoReg = new JLabel("Correo:") {{setFont(fuenteGrande);}};
+        JTextField campoCorreoReg = new JTextField(15) {{setFont(fuenteGrande);setPreferredSize(new Dimension(widthvr, heightvr));}};
+        JButton botonRegistro = new JButton("Registrar") {{setFont(fuenteGrande);setPreferredSize(new Dimension(widthvr, heightvr));}};
+        JButton botonVolR = new JButton("Volver") {{setFont(fuenteGrande);setPreferredSize(new Dimension(widthvr, heightvr));}};
 
-        panelRegistro.add(labelUsuarioReg);
-        panelRegistro.add(campoUsuarioReg);
-        panelRegistro.add(labelContrasenaReg);
-        panelRegistro.add(campoContrasenaReg);
-        panelRegistro.add(labelTelReg);
-        panelRegistro.add(campoTelReg);
-        panelRegistro.add(labelCorreoReg);
-        panelRegistro.add(campoCorreoReg);
-        panelRegistro.add(botonRegistro);
-        panelRegistro.add(botonVolR);
+        // Añadir los componentes al panel
+        panelRegistro.add(labelUsuarioReg, "align center");
+        panelRegistro.add(campoUsuarioReg, "grow");
+        panelRegistro.add(labelContrasenaReg, "align center");
+        panelRegistro.add(campoContrasenaReg, "grow");
+        panelRegistro.add(labelTelReg, "align center");
+        panelRegistro.add(campoTelReg, "grow");
+        panelRegistro.add(labelCorreoReg, "align center");
+        panelRegistro.add(campoCorreoReg, "grow");
+        panelRegistro.add(botonRegistro, "grow");
+        panelRegistro.add(botonVolR, "grow");
 
         // Panel perfil con MigLayout
         JPanel panelPerfil = new JPanel(new MigLayout("wrap 1", "[center]", "[]10[]")); // Usando MigLayout
-        JLabel textoPerfil = new JLabel("Perfil", SwingConstants.CENTER);
-        textoPerfil.setFont(new Font("Arial", Font.BOLD, 16)); // Estableciendo el estilo del texto
-        JLabel labelNombreUs = new JLabel("Nombre de usuario:");
-        JLabel labelNombreUsvc = new JLabel("");
-        JLabel labelNombre = new JLabel("Nombre:");
-        JLabel labelNombrevc = new JLabel("");
-        JLabel labelCorreo = new JLabel("Correo Electrónico:");
-        JLabel labelCorreovc = new JLabel("");
-        JLabel labelTelefono = new JLabel("Número de Teléfono:");
-        JLabel labelTelefonovc = new JLabel("");
-        JButton botonCanre = new JButton("Cancelar reservas");
-        botonCanre.setPreferredSize(new Dimension(175, 25));
-        botonCanre.setFont(new Font("Arial", Font.PLAIN, 12));
-        JButton botonVolPf = new JButton("Volver");
-        botonVolPf.setPreferredSize(new Dimension(80, 25));
-        botonVolPf.setFont(new Font("Arial", Font.PLAIN, 12));
+        JLabel textoPerfil = new JLabel("Perfil", SwingConstants.CENTER){{setFont(fuenteGrande);}};
+        JLabel labelNombreUs = new JLabel("Nombre de usuario:"){{setFont(fuenteGrande);}};
+        JLabel labelNombreUsvc = new JLabel(""){{setFont(fuenteGrande);}};
+        JLabel labelNombre = new JLabel("Nombre:"){{setFont(fuenteGrande);}};
+        JLabel labelNombrevc = new JLabel(""){{setFont(fuenteGrande);}};
+        JLabel labelCorreo = new JLabel("Correo Electrónico:"){{setFont(fuenteGrande);}};
+        JLabel labelCorreovc = new JLabel(""){{setFont(fuenteGrande);}};
+        JLabel labelTelefono = new JLabel("Número de Teléfono:"){{setFont(fuenteGrande);}};
+        JLabel labelTelefonovc = new JLabel(""){{setFont(fuenteGrande);}};
+        JButton botonCanre = new JButton("Cancelar reservas"){{setFont(fuenteGrande);setPreferredSize(new Dimension(widthvr, heightvr));}};
+        JButton botonVolPf = new JButton("Volver"){{setFont(fuenteGrande);setPreferredSize(new Dimension(widthvr, heightvr));}};
 
 
         panelPerfil.add(textoPerfil, "span, grow, align center");
@@ -191,28 +186,28 @@ public class UI {
 
         // Panel de Pago utilizando MigLayout
         JPanel panelPago = new JPanel(new MigLayout("wrap 1", "[left][grow]")); // Dos columnas, la primera alineada a la derecha
-        JLabel labelNumeroTarjeta = new JLabel("Número de tarjeta:");
-        JTextField campoNumeroTarjeta = new JTextField(15);
-        JLabel labelNombreTitular = new JLabel("Nombre del titular:");
-        JTextField campoNombreTitular = new JTextField(15);
-        JLabel labelFechaExpiracion = new JLabel("Fecha de expiración (MM/YY):");
-        JTextField campoFechaExpiracion = new JTextField(10);
-        JLabel labelCVV = new JLabel("CVV:");
-        JTextField campoCVV = new JTextField(4);
-        JButton botonConfirmarPago = new JButton("Confirmar Pago");
-        JButton botonVolPg = new JButton("Volver");
+        JLabel labelNumeroTarjeta = new JLabel("Número de tarjeta:"){{setFont(fuenteGrande);}};
+        JTextField campoNumeroTarjeta = new JTextField(15){{setFont(fuenteGrande);setPreferredSize(new Dimension(widthvr, heightvr));}};
+        JLabel labelNombreTitular = new JLabel("Nombre del titular:"){{setFont(fuenteGrande);}};
+        JTextField campoNombreTitular = new JTextField(15){{setFont(fuenteGrande);setPreferredSize(new Dimension(widthvr, heightvr));}};
+        JLabel labelFechaExpiracion = new JLabel("Fecha de expiración (MM/YY):"){{setFont(fuenteGrande);}};
+        JTextField campoFechaExpiracion = new JTextField(15){{setFont(fuenteGrande);setPreferredSize(new Dimension(widthvr, heightvr));}};
+        JLabel labelCVV = new JLabel("CVV:"){{setFont(fuenteGrande);}};
+        JTextField campoCVV = new JTextField(4){{setFont(fuenteGrande);setPreferredSize(new Dimension(widthvr, heightvr));}};
+        JButton botonConfirmarPago = new JButton("Confirmar Pago"){{setFont(fuenteGrande);setPreferredSize(new Dimension(widthvr, heightvr));}};
+        JButton botonVolPg = new JButton("Volver"){{setFont(fuenteGrande);setPreferredSize(new Dimension(widthvr, heightvr));}};
 
-// Agregando componentes al panel
-        panelPago.add(labelNumeroTarjeta); // Etiqueta del número de tarjeta
-        panelPago.add(campoNumeroTarjeta); // Campo del número de tarjeta
-        panelPago.add(labelNombreTitular); // Etiqueta del nombre del titular
-        panelPago.add(campoNombreTitular); // Campo del nombre del titular
-        panelPago.add(labelFechaExpiracion); // Etiqueta de fecha de expiración
-        panelPago.add(campoFechaExpiracion); // Campo de fecha de expiración
-        panelPago.add(labelCVV); // Etiqueta del CVV
-        panelPago.add(campoCVV); // Campo del CVV
-        panelPago.add(botonConfirmarPago, "grow"); // Botón de confirmar pago, ocupa toda la fila
-        panelPago.add(botonVolPg, "grow"); // Botón de volver, ocupa toda la fila
+
+        panelPago.add(labelNumeroTarjeta,"span, align center");
+        panelPago.add(campoNumeroTarjeta,"align center");
+        panelPago.add(labelNombreTitular,"align center");
+        panelPago.add(campoNombreTitular,"align center");
+        panelPago.add(labelFechaExpiracion,"align center");
+        panelPago.add(campoFechaExpiracion,"align center");
+        panelPago.add(labelCVV,"align center");
+        panelPago.add(campoCVV,"align center");
+        panelPago.add(botonConfirmarPago, "grow");
+        panelPago.add(botonVolPg, "grow");
 
 
         // Panel de Confirmación de Compra
@@ -224,15 +219,42 @@ public class UI {
 
         panelConfirmacion.add(botonVolverConfirmacion);
 
+        JPanel panelCentradopi = new JPanel(new GridBagLayout());
+        GridBagConstraints gbcpi = new GridBagConstraints();
+        gbcpi.anchor = GridBagConstraints.CENTER;
+        panelCentradopi.add(panelInicial, gbcpi);
+
+        JPanel panelCentradopa = new JPanel(new GridBagLayout());
+        GridBagConstraints gbcpa = new GridBagConstraints();
+        gbcpa.anchor = GridBagConstraints.CENTER;
+        panelCentradopa.add(panelPago, gbcpa);
+
+
+        JPanel panelCentradopf = new JPanel(new GridBagLayout());
+        GridBagConstraints gbcpf = new GridBagConstraints();
+        gbcpf.anchor = GridBagConstraints.CENTER;
+        panelCentradopf.add(panelPerfil, gbcpf);
+
+
+        JPanel panelCentradolg = new JPanel(new GridBagLayout());
+        GridBagConstraints gbcplg = new GridBagConstraints();
+        gbcplg.anchor = GridBagConstraints.CENTER;
+        panelCentradolg.add(panelLogin, gbcpf);
+
+        JPanel panelCentradorg = new JPanel(new GridBagLayout());
+        GridBagConstraints gbcprg = new GridBagConstraints();
+        gbcprg.anchor = GridBagConstraints.CENTER;
+        panelCentradorg.add(panelRegistro, gbcpf);
+
 
         // Añadir los paneles a la ventana
-        ventana.add(panelInicial, "Panel Inicial");
-        ventana.add(panelLogin, "Panel Login");
+        ventana.add(panelCentradopi, "Panel Inicial");
+        ventana.add(panelCentradolg, "Panel Login");
         ventana.add(panelBienvenida, "Panel Bienvenida");
-        ventana.add(panelRegistro, "Panel Registro");
-        ventana.add(panelPerfil, "Panel Perfil");
+        ventana.add(panelCentradorg, "Panel Registro");
+        ventana.add(panelCentradopf, "Panel Perfil");
         ventana.add(panelAsientos, "Panel Asientos");
-        ventana.add(panelPago,"Panel Pago");
+        ventana.add(panelCentradopa,"Panel Pago");
 
         // Mostrar el panel inicial primero
         cl.show(ventana.getContentPane(), "Panel Inicial");
