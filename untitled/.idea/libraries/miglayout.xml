@@ -1,10 +1,10 @@
 <component name="libraryTable">
   <library name="miglayout">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/../../javalibraries/miglayout" />
+      <root url="jar://$USER_HOME$/Desktop/miglayout1/miglayout-core-5.2.jar!/" />
+      <root url="jar://$USER_HOME$/Desktop/miglayout1/miglayout-swing-5.2.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
-    <jarDirectory url="file://$PROJECT_DIR$/../../javalibraries/miglayout" recursive="false" />
   </library>
 </component>
