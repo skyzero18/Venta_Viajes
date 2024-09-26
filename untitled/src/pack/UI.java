@@ -19,6 +19,9 @@ public class UI {
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ventana.setExtendedState(JFrame.MAXIMIZED_BOTH);
         ventana.setLayout(new CardLayout());
+        // Cargar la imagen del icono
+        Image icono = Toolkit.getDefaultToolkit().getImage("src/FlyUs.png");
+
 
 
         CardLayout cl = (CardLayout) ventana.getContentPane().getLayout();
@@ -491,7 +494,7 @@ public class UI {
 
 
 
-
+        ventana.setIconImage(icono);
         ventana.setVisible(true);
     }
 }

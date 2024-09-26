@@ -10,5 +10,8 @@
     <orderEntry type="library" name="mysql-connector-j-9.0.0" level="project" />
     <orderEntry type="library" name="Flatlaf" level="project" />
     <orderEntry type="library" name="miglayout" level="project" />
+    <orderEntry type="library" name="Flatlaf1" level="project" />
+    <orderEntry type="library" name="miglayout1" level="project" />
+    <orderEntry type="library" name="mysql-connector-j-9.0.01" level="project" />
   </component>
 </module>
