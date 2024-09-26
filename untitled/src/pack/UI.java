@@ -175,11 +175,11 @@ public class UI {
         panelBienvenida.add(panelResultados, BorderLayout.CENTER);
 
         //Panel asientos
-        JPanel panelAsientos = new JPanel();
-        panelAsientos.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10)); // Configurar FlowLayout con separación de 10px
+        JPanel panelAsientos = new JPanel(new MigLayout("wrap 5", "[center]10px", "10px"));
 
-        JLabel labelSelec = new JLabel("Seleccione su asiento");
-        panelAsientos.add(labelSelec);
+
+        JLabel labelSelec = new JLabel("Seleccione su asiento"){{setFont(fuenteGrande);setPreferredSize(new Dimension(widthvr, heightvr));}};
+        panelAsientos.add(labelSelec,  "span, wrap");
 
 
 
@@ -246,6 +246,11 @@ public class UI {
         gbcprg.anchor = GridBagConstraints.CENTER;
         panelCentradorg.add(panelRegistro, gbcpf);
 
+        JPanel panelCentradoasi = new JPanel(new GridBagLayout());
+        GridBagConstraints gbcpca = new GridBagConstraints();
+        gbcpca.anchor = GridBagConstraints.CENTER;
+        panelCentradoasi.add(panelAsientos, gbcpf);
+
 
         // Añadir los paneles a la ventana
         ventana.add(panelCentradopi, "Panel Inicial");
@@ -253,7 +258,7 @@ public class UI {
         ventana.add(panelBienvenida, "Panel Bienvenida");
         ventana.add(panelCentradorg, "Panel Registro");
         ventana.add(panelCentradopf, "Panel Perfil");
-        ventana.add(panelAsientos, "Panel Asientos");
+        ventana.add(panelCentradoasi, "Panel Asientos");
         ventana.add(panelCentradopa,"Panel Pago");
 
         // Mostrar el panel inicial primero
@@ -418,8 +423,9 @@ public class UI {
         char letra = 'A';
         for (int i = 0; i < 25; i++) {
             int numero = (i % 5) + 1;
-            JButton botonAsiento = new JButton(letra + "" + numero); // Ejemplo: A1, A2, A3, etc.
-            panelAsientos.add(botonAsiento);
+            JButton botonAsiento = new JButton(letra + "" + numero){{setFont(fuenteGrande);setPreferredSize(new Dimension(widthvr, heightvr));}}; // Ejemplo: A1, A2, A3, etc.
+            panelAsientos.add(botonAsiento); // Añadimos el botón
+
             botonAsiento.addActionListener(e -> {
                 String asientoSeleccionado = botonAsiento.getText();
                 Vuelo vuelo = new Vuelo();
@@ -427,14 +433,15 @@ public class UI {
                 if (idAsiento != -1) {
                     System.out.println("Asiento seleccionado: " + asientoSeleccionado + " con ID: " + idAsiento);
                     System.out.println("Vuelo " + idVuelo);
-                    System.out.println("id usuario "+ hayUsuariosActivos);
+                    System.out.println("id usuario " + hayUsuariosActivos);
                     cl.show(ventana.getContentPane(), "Panel Pago");
                 } else {
                     System.out.println("Asiento no encontrado para: " + asientoSeleccionado);
                 }
             });
+
             if ((i + 1) % 5 == 0) {
-                letra++;
+                letra++; // Cambia la letra cada 5 botones
             }
         }
 
