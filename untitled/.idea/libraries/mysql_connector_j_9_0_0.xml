@@ -1,18 +1,9 @@
 <component name="libraryTable">
   <library name="mysql-connector-j-9.0.0">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../javalibraries/mysql-connector-j-9.0.0/mysql-connector-j-9.0.0.jar!/" />
       <root url="jar://$USER_HOME$/Desktop/mysql-connector-j-9.0.0/mysql-connector-j-9.0.0.jar!/" />
     </CLASSES>
-    <JAVADOC>
-      <root url="jar://$USER_HOME$/Desktop/CALENDARREEER/jcalendar-1.4.zip!/doc/api" />
-    </JAVADOC>
-    <SOURCES>
-      <root url="jar://$USER_HOME$/Desktop/CALENDARREEER/jcalendar-1.4.zip!/src" />
-    </SOURCES>
-    <excluded>
-      <root url="jar://$USER_HOME$/Desktop/mysql-connector-j-9.0.0/mysql-connector-j-9.0.0.jar!/" />
-      <root url="jar://$USER_HOME$/Desktop/CALENDARREEER/jcalendar-1.4.zip!/" />
-    </excluded>
+    <JAVADOC />
+    <SOURCES />
   </library>
 </component>
